@@ -1,4 +1,4 @@
-package main.java.Semantics;
+package Semantics;
 
 /***
  * Wrapper class with semantic check ( value!= 0 ) <br>

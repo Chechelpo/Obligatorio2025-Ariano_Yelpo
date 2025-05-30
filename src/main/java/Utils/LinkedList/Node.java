@@ -1,14 +1,12 @@
-package Utils.DoubleLinkedList;
+package Utils.LinkedList;
 
-public class Node<K> {
+public class Node<K extends Comparable<K>> implements Comparable<Node<K>> {
     private K value;
     private Node<K> next;
-    private Node<K> prev;
 
     public Node(K value) {
         this.value = value;
         this.next = null;
-        this.prev = null;
     }
 
     public K getValue() {
@@ -27,11 +25,8 @@ public class Node<K> {
         this.next = next;
     }
 
-    public Node<K> getPrev() {
-        return prev;
-    }
-
-    public void setPrev(Node<K> prev) {
-        this.prev = prev;
+    @Override
+    public int compareTo(Node<K> o) {
+        return this.value.compareTo(o.value);
     }
 }

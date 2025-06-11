@@ -34,4 +34,7 @@ public class Director {
     public void setName(NotBlankString name) {
         this.name = name;
     }
+    public void agregarPelicula(Pelicula pelicula) {
+        this.directedMovies.add(pelicula);
+    }
 }

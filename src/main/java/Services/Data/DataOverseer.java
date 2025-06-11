@@ -4,7 +4,8 @@ import Utils.HashTable.HashTable;
 
 public class DataOverseer {
     final HashTable Sagas = new HashTable();
-    final HashTable Generos = new HashTable();
-    final HashTable Directores = new HashTable();
-    final HashTable Actores = new HashTable();
+    final HashTable peliculasPorIdioma = new HashTable();
+    final HashTable peliculas = new HashTable();
+    final HashTable peliculasPorDirector = new HashTable();
+
 }

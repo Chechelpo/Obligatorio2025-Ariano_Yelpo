@@ -11,7 +11,7 @@ public class Pelicula {
     private int budget;
     private NotBlankString originalLanguage;
     private List<Review> reviews; //Cambiar esto despues
-    private int revenew;
+    private int revenue;
     private int income;
 
     //Empty Constructor

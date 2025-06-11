@@ -1,21 +1,19 @@
 package Domain;
 
+import Interfaces.MyList;
 import Semantics.NotNullInteger;
+import Utils.SimpleLinkedList.MyLinkedList;
 
 import java.util.List;
 
 public class Usuario {
+    private final MyLinkedList<Object> reviews;
     private NotNullInteger id;
-    private List<Review> reviews;
-
-    //Empty Constructor
-    public Usuario() {
-    }
 
     //Complete Constructor
-    public Usuario(NotNullInteger id, List<Review> reviews) {
+    public Usuario(NotNullInteger id) {
         this.id = id;
-        this.reviews = reviews;
+        this.reviews = new MyLinkedList<>();
     }
 
     //Getters and Setters
@@ -33,5 +31,9 @@ public class Usuario {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
     }
 }

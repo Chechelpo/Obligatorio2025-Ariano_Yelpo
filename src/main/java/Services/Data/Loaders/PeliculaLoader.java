@@ -3,6 +3,7 @@ package Services.Data.Loaders;
 import Domain.Pelicula;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
+import Services.Data.managers.PeliculaManager;
 import Services.Data.managers.SagaManager;
 import Services.Data.managers.GeneroManager;
 import org.apache.commons.csv.CSVFormat;
@@ -11,13 +12,31 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
 
-public class PeliculaLoader {
+class PeliculaLoader {
+    private SagaManager sagaManager;
+    private GeneroManager generoManager;
+    private PeliculaManager peliculaManager;
 
-    public List<Pelicula> cargarPeliculas(String pathCsv, SagaManager sagaManager, GeneroManager generoManager) {
-        List<Pelicula> peliculas = new ArrayList<>();
+    public PeliculaLoader() {
+        this.sagaManager = new SagaManager();
+        this.generoManager = new GeneroManager();
+        this.peliculaManager = new PeliculaManager();
+    }
+
+    public SagaManager getSagaManager() {
+        return sagaManager;
+    }
+
+    public GeneroManager getGeneroManager() {
+        return generoManager;
+    }
+
+    public PeliculaManager getPeliculaManager() {
+        return peliculaManager;
+    }
+
+    public void cargarPeliculas(String pathCsv, SagaManager sagaManager, GeneroManager generoManager) {
 
         CSVFormat format = CSVFormat.Builder.create()
                 .setHeader()
@@ -41,18 +60,15 @@ public class PeliculaLoader {
                     if (idStr == null || idStr.isBlank() || titleStr == null || titleStr.isBlank())
                         continue;
 
-                    int id = Integer.parseInt(idStr.trim());
+                    // Transformamos las entries al formato de la pelicula
+                    NotNullInteger id = new NotNullInteger(Integer.parseInt(idStr.trim()));
+                    NotBlankString title = new NotBlankString(titleStr.trim());
+                    NotBlankString lang = new NotBlankString(langStr.trim());
                     int budget = parseSafeInt(budgetStr);
                     int revenue = parseSafeInt(revenueStr);
 
-                    Pelicula pelicula = new Pelicula(
-                            new NotNullInteger(id),
-                            new NotBlankString(titleStr),
-                            budget,
-                            new NotBlankString(langStr != null ? langStr : "unknown"),
-                            revenue,
-                            revenue - budget
-                    );
+                    //Se encarga de buscar y/o anadir la nueva pelicula
+                    Pelicula pelicula = peliculaManager.managePelicula(id,title,budget,lang,revenue);
 
                     // Registrar saga (puede generar una unitaria si no hay JSON válido)
                     String belongsToCollection = record.get("belongs_to_collection");
@@ -62,7 +78,6 @@ public class PeliculaLoader {
                     String genresRaw = record.get("genres");
                     generoManager.registrarGeneros(pelicula, genresRaw);
 
-                    peliculas.add(pelicula);
 
                 } catch (NumberFormatException e) {
                     // ID no válido u otro número mal formado → ignorar
@@ -74,8 +89,6 @@ public class PeliculaLoader {
         } catch (Exception e) {
             System.err.println("Error al leer el archivo de películas: " + e.getMessage());
         }
-
-        return peliculas;
     }
 
     private int parseSafeInt(String value) {

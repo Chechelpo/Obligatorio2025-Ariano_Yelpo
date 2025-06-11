@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
 public class HashTable<K, V> implements Iterable<Entry<K, V>>, MyHashTable<K,V> {
-    private static final int INITIAL_CAPACITY = 16;
+    private static final int INITIAL_CAPACITY = 500000;
     private static final double LOAD_FACTOR = 0.75;
 
     private LinkedListHash<K, V>[] buckets;

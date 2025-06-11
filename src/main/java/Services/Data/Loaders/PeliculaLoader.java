@@ -36,7 +36,7 @@ class PeliculaLoader {
         return peliculaManager;
     }
 
-    public void cargarPeliculas(String pathCsv, SagaManager sagaManager, GeneroManager generoManager) {
+    public void cargarPeliculas(String pathCsv) {
 
         CSVFormat format = CSVFormat.Builder.create()
                 .setHeader()

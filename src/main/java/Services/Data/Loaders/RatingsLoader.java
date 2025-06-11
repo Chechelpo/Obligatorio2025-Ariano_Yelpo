@@ -15,12 +15,10 @@ import java.io.Reader;
 class RatingsLoader {
     UserManager userManager;
     PeliculaManager peliculaManager;
-    ReviewManager reviewManager;
 
     public RatingsLoader(PeliculaManager peliculaManager) {
         this.userManager = new UserManager();
         this.peliculaManager = peliculaManager;
-        this.reviewManager = new ReviewManager();
     }
     public void cargarRatings(String pathCsv)
     {
@@ -48,11 +46,11 @@ class RatingsLoader {
                     Pelicula pelicula = peliculaManager.buscarPelicula(movieId);
                     if (pelicula == null) continue; // Si la película no existe, ignoramos
 
-                    Review review = new Review(rating);
+                    Review review = new Review(rating,user,pelicula,timestamp);
 
                     // Asignar review a usuario y película
                     user.addReview(review);
-                    pelicula.getReviews().add(review); // o pelicula.agregarReview(review)
+                    pelicula.getReviews().add(review);
 
                 } catch (Exception e) {
                     // Línea inválida, la ignoramos

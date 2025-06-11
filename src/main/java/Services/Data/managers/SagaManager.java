@@ -4,12 +4,20 @@ import Domain.Pelicula;
 import Domain.Saga;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
+import Utils.HashTableCerrado.HashCerrado;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 
 public class SagaManager {
-    HashMap<NotNullInteger, Saga> sagas = new HashMap<>();
+    private final HashCerrado<NotNullInteger, Saga> sagas;
+    public SagaManager() {
+        sagas = new HashCerrado<>(50000);
+    }
+
+    public HashCerrado<NotNullInteger, Saga> getSagas() {
+        return sagas;
+    }
+
     public void registrarSaga(Pelicula pelicula, String rawJson) {
         if (rawJson == null || rawJson.isBlank() || rawJson.equals("null")) {
             crearSagaUnitaria(pelicula);

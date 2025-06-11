@@ -1,56 +1,47 @@
 package Domain;
 
+import Interfaces.MyList;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
-
-import java.util.List;
+import Utils.HashTableCerrado.HashCerrado;
 
 public class Pelicula {
-    private NotNullInteger id;
-    private NotBlankString title;
-    private int budget;
+    private final NotNullInteger id;
+    private final NotBlankString title;
+    private final int budget;
     private NotBlankString originalLanguage;
-    private List<Review> reviews; //Cambiar esto despues
+    private MyList<Review> reviews;
+    private final HashCerrado<String,Boolean> generos ;
     private int revenue;
     private int income;
 
-    //Empty Constructor
-    public Pelicula() {
-    }
-
     //Complete Constructor
-    public Pelicula(NotNullInteger id, NotBlankString title, int budget, NotBlankString originalLanguage, int revenew, int ingresos) {
+    public Pelicula(NotNullInteger id, NotBlankString title, int budget, NotBlankString originalLanguage, int revenue, int ingresos) {
         this.id = id;
         this.title = title;
         this.budget = budget;
         this.originalLanguage = originalLanguage;
-        this.revenew = revenew;
+        this.revenue = revenue;
         this.income = ingresos;
+        this.generos = new HashCerrado<>(5000);
     }
 
     //Getters and Setters
-    public NotNullInteger getId() {
-        return id;
+
+    public HashCerrado<String, Boolean> getGenero() {
+        return generos;
     }
 
-    public void setId(NotNullInteger id) {
-        this.id = id;
+    public NotNullInteger getId() {
+        return id;
     }
 
     public NotBlankString getTitle() {
         return title;
     }
 
-    public void setTitle(NotBlankString title) {
-        this.title = title;
-    }
-
     public int getBudget() {
         return budget;
-    }
-
-    public void setBudget(int budget) {
-        this.budget = budget;
     }
 
     public NotBlankString getOriginalLanguage() {
@@ -61,20 +52,16 @@ public class Pelicula {
         this.originalLanguage = originalLanguage;
     }
 
-    public List<Review> getReviews() {
+    public MyList<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+    public int getRevenue() {
+        return revenue;
     }
 
-    public int getRevenew() {
-        return revenew;
-    }
-
-    public void setRevenew(int revenew) {
-        this.revenew = revenew;
+    public void setRevenue(int revenue) {
+        this.revenue = revenue;
     }
 
     public int getIncome() {
@@ -86,4 +73,10 @@ public class Pelicula {
     }
 
 //Functions
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
+    public void addGenre(String genre) {
+        generos.put(genre, true);
+    }
 }

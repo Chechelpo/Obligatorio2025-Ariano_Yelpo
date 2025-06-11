@@ -1,11 +1,19 @@
 package Services.Data;
 
-import Utils.HashTable.HashTable;
+import Domain.Pelicula;
+import Domain.Saga;
+import Interfaces.HashCerrado;
+import Interfaces.MyHashTable;
+import Semantics.NotNullInteger;
+import Services.Data.Loaders.DSL;
 
 public class DataOverseer {
-    final HashTable Sagas = new HashTable();
-    final HashTable peliculasPorIdioma = new HashTable();
-    final HashTable peliculas = new HashTable();
-    final HashTable peliculasPorDirector = new HashTable();
-
+    final DSL dataServiceLoader = new DSL("");
+    private final MyHashTable<NotNullInteger, Pelicula> peliculasPorId;
+    private final HashCerrado<NotNullInteger, Saga> sagasPorID;
+    //private final HashCerrado<NotNullInteger, Director> directorPorID;
+    DataOverseer() {
+        this.peliculasPorId = dataServiceLoader.getPeliculasPorID();
+        this.sagasPorID= dataServiceLoader.getSagasPorID();
+    }
 }

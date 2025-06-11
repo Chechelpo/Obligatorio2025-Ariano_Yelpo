@@ -1,9 +1,11 @@
 package Services.Data.Loaders;
 
 import Domain.Pelicula;
-import Services.Data.managers.GeneroManager;
+import Domain.Saga;
+import Interfaces.MyHashTable;
+import Semantics.NotNullInteger;
 import Services.Data.managers.PeliculaManager;
-import Services.Data.managers.SagaManager;
+import Utils.HashTableCerrado.HashCerrado;
 
 /*
 El orden de carga es el siguiente:
@@ -15,10 +17,27 @@ public class DSL {
     private PeliculaLoader peliculaLoader;
     private CreditsLoader creditsLoader;
     private RatingsLoader ratingsLoader;
+
     String pathToCSV;
-    DSL(String pathToCSV) {
+    public DSL(String pathToCSV) {
         this.pathToCSV = pathToCSV;
         this.peliculaLoader = new PeliculaLoader();
+    }
+
+    public MyHashTable<NotNullInteger,Pelicula> getPeliculasPorID() {
+        return peliculaLoader.getPeliculaManager().getPeliculas();
+    }
+
+    public HashCerrado<NotNullInteger, Saga> getSagasPorID() {
+        return peliculaLoader.getSagaManager().getSagas();
+    }
+
+    public RatingsLoader getRatingsLoader() {
+        return ratingsLoader;
+    }
+
+    public String getPathToCSV() {
+        return pathToCSV;
     }
 
     private void setCreditsLoader(CreditsLoader creditsLoader) {
@@ -30,23 +49,21 @@ public class DSL {
     }
 
     private void firstPhase(){
-        SagaManager sagaManager = new SagaManager();
-        GeneroManager generoManager = new GeneroManager();
-        peliculaLoader.cargarPeliculas(pathToCSV,sagaManager,generoManager);
+        peliculaLoader.cargarPeliculas(pathToCSV);
     }
     private void secondPhase(PeliculaManager peliculaManager){
         RatingsLoader ratingsLoader = new RatingsLoader(peliculaLoader.getPeliculaManager());
         this.setRatingsLoader(ratingsLoader);
         ratingsLoader.cargarRatings(pathToCSV);
     }
-    private void thirdPhase(PeliculaManager peliculaManager){
+/*  private void thirdPhase(PeliculaManager peliculaManager){
         CreditsLoader creditsLoader = new CreditsLoader(peliculaManager);
         this.setCreditsLoader(creditsLoader);
         creditsLoader.cargarCredits(pathToCSV);
-    }
+    }*/
     public void Start(){
         firstPhase();
         secondPhase(peliculaLoader.getPeliculaManager());
-        thirdPhase(peliculaLoader.getPeliculaManager());
+        //thirdPhase(peliculaLoader.getPeliculaManager());
     }
 }

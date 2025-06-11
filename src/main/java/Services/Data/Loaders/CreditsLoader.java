@@ -4,9 +4,7 @@ import Domain.Director;
 import Domain.Pelicula;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
-import Services.Data.managers.GeneroManager;
 import Services.Data.managers.PeliculaManager;
-import Services.Data.managers.SagaManager;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -17,13 +15,9 @@ import java.io.FileReader;
 import java.io.Reader;
 
 public class CreditsLoader {
-    private SagaManager sagaManager;
-    private GeneroManager generoManager;
-    private PeliculaManager peliculaManager;
+/*    private PeliculaManager peliculaManager;
 
     public CreditsLoader(PeliculaManager peliculaManager) {
-        this.sagaManager = new SagaManager();
-        this.generoManager = new GeneroManager();
         this.peliculaManager = new PeliculaManager();
     }
 
@@ -86,4 +80,6 @@ public class CreditsLoader {
             System.err.println("Error al cargar credits.csv: " + e.getMessage());
         }
     }
+
+ */
 }

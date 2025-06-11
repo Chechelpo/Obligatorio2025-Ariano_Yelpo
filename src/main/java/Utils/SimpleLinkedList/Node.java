@@ -1,6 +1,6 @@
-package Utils.LinkedList;
+package Utils.SimpleLinkedList;
 
-public class Node<K extends Comparable<K>> implements Comparable<Node<K>> {
+public class Node<K> {
     private K value;
     private Node<K> next;
 
@@ -23,10 +23,5 @@ public class Node<K extends Comparable<K>> implements Comparable<Node<K>> {
 
     public void setNext(Node<K> next) {
         this.next = next;
-    }
-
-    @Override
-    public int compareTo(Node<K> o) {
-        return this.value.compareTo(o.value);
     }
 }

@@ -1,13 +1,15 @@
-package Utils.LinkedList;
+package Utils.SimpleLinkedList;
 
+
+import Interfaces.MyList;
 
 import java.util.Iterator;
 
-public class LinkedList<K extends Comparable<K>> implements Iterable<K> {
+public class MyLinkedList<K> implements Iterable<K>, MyList<K> {
     private Node<K> head;
     private int size;
 
-    public LinkedList() {
+    public MyLinkedList() {
         this.head = null;
         this.size = 0;
     }
@@ -24,8 +26,8 @@ public class LinkedList<K extends Comparable<K>> implements Iterable<K> {
         return head;
     }
 
-    public void append(K value){
-        Node<K> toAdd = new Node<>(value);
+    public void add(K object){
+        Node<K> toAdd = new Node<>(object);
         if(isEmpty()) {
             head = toAdd;
         } else {

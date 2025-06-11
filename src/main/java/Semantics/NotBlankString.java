@@ -5,10 +5,14 @@ package Semantics;
  * Implements: compareTo, equals, toString
  */
 public class NotBlankString implements Comparable<NotBlankString> {
-    final String value;
+    private final String value;
     public NotBlankString(String value) {
         if(value == null || value.isBlank()) throw new IllegalArgumentException("Blank or null string");
         this.value = value;
+    }
+
+    public String getValue() {
+        return value;
     }
 
     @Override

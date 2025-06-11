@@ -1,32 +1,29 @@
 package Domain;
 
+import Interfaces.MyList;
 import Semantics.NotBlankString;
+import Semantics.NotNullInteger;
+import Utils.SimpleLinkedList.MyLinkedList;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Saga {
-    private int id;
+    private NotNullInteger id;
     private NotBlankString title;
-    private List<Pelicula> movies;
-
-    //Empty Constructor
-    public Saga() {
-    }
+    private MyList<Pelicula> movies;
 
     //Complete Constructor
-    public Saga(int id, NotBlankString title, List<Pelicula> movies) {
+    public Saga(NotNullInteger id, NotBlankString title) {
         this.id = id;
         this.title = title;
-        this.movies = movies;
+        this.movies = new MyLinkedList<Pelicula>();
     }
 
     //Getters and Setters
-    public int getId() {
+    public NotNullInteger getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public NotBlankString getTitle() {
@@ -37,11 +34,10 @@ public class Saga {
         this.title = title;
     }
 
-    public List<Pelicula> getMovies() {
+    public MyList<Pelicula> getMovies() {
         return movies;
     }
-
-    public void setMovies(List<Pelicula> movies) {
-        this.movies = movies;
+    public void agregarPelicula(Pelicula pelicula) {
+        this.movies.add(pelicula);
     }
 }

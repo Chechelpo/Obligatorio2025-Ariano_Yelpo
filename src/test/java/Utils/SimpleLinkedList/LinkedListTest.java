@@ -1,4 +1,4 @@
-package Utils.LinkedList;
+package Utils.SimpleLinkedList;
 
 
 import java.util.Iterator;
@@ -9,7 +9,7 @@ class LinkedListTest {
 
     @org.junit.jupiter.api.Test
     void getSize() {
-        LinkedList<Integer> list = new LinkedList<>();
+        MyLinkedList<Integer> list = new MyLinkedList<>();
         list.append(1);
         list.append(2);
         list.append(3);
@@ -19,7 +19,7 @@ class LinkedListTest {
 
     @org.junit.jupiter.api.Test
     void isEmpty() {
-        LinkedList<Integer> list = new LinkedList<>();
+        MyLinkedList<Integer> list = new MyLinkedList<>();
 
         assertTrue(list.isEmpty());
         list.append(1);
@@ -29,7 +29,7 @@ class LinkedListTest {
 
     @org.junit.jupiter.api.Test
     void append() {
-        LinkedList<Integer> list = new LinkedList<>();
+        MyLinkedList<Integer> list = new MyLinkedList<>();
         list.append(1);
         assertEquals(1, list.getHead().getValue());
 
@@ -41,7 +41,7 @@ class LinkedListTest {
 
     @org.junit.jupiter.api.Test
     void iterator() {
-        LinkedList<Integer> list = new LinkedList<>();
+        MyLinkedList<Integer> list = new MyLinkedList<>();
         list.append(1);
         list.append(2);
         list.append(3);

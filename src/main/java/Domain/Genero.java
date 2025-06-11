@@ -54,4 +54,8 @@ public class Genero {
     public void setPopularity(int popularity) {
         this.popularity = popularity;
     }
+
+    public void agregarPelicula(Pelicula pelicula) {
+        this.peliculas.add(pelicula);
+    }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/src">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources/archetype-resources/src/main/java" isTestSource="false" packagePrefix="main.resources.archetype" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources/archetype-resources/src/test/java" isTestSource="false" packagePrefix="main.resources.archetype" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources/archetype-resources/src/test" type="java-test-resource" />
+    </content>
+    <orderEntry type="jdk" jdkName="21" jdkType="JavaSDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-csv:1.10.0" level="project" />
+    <orderEntry type="library" name="Maven: org.json:json:20240303" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.junit.jupiter:junit-jupiter-api:5.13.1" level="project" />
+  </component>
+</module>

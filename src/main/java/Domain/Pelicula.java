@@ -4,6 +4,7 @@ import Interfaces.MyList;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
 import Utils.HashTableCerrado.HashCerrado;
+import Utils.SimpleLinkedList.MyLinkedList;
 
 public class Pelicula {
     private final NotNullInteger id;
@@ -23,6 +24,7 @@ public class Pelicula {
         this.originalLanguage = originalLanguage;
         this.revenue = revenue;
         this.income = ingresos;
+        this.reviews = new MyLinkedList<>();
         this.generos = new HashCerrado<>(5000);
     }
 

@@ -30,4 +30,12 @@ public class Review {
     public void setEvaluation(int evaluation) {
         this.evaluation = evaluation;
     }
+
+    public Pelicula getPelicula() {
+        return pelicula;
+    }
+
+    public void setPelicula(Pelicula pelicula) {
+        this.pelicula = pelicula;
+    }
 }

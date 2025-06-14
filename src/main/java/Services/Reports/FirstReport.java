@@ -1,0 +1,100 @@
+package Services.Reports;
+
+import Domain.Pelicula;
+import Domain.PeliculaConConteo;
+import Domain.Review;
+import Interfaces.MyHashTable;
+import Semantics.NotNullInteger;
+import Utils.QuickSort.QuickSort;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.LinkedList;
+
+/**
+ * Tomando en cuenta las películas y las evaluaciones que los usuarios realizaron
+ * sobre las mismas, indicar el Top 5 de las películas en idioma original Inglés, Francés,
+ * Italiano, Español y Portugues con más evaluaciones por parte de los usuarios.
+ * Datos esperados del resultado:
+ * ● Id de la película.
+ * ● Título de la película.
+ * ● Total de evaluaciones.
+ * ● Idioma Original
+ * **/
+
+public class FirstReport {
+    //ESTAS LISTAS DESPUES HAY QUE CAMBIARLAS POR LAS VERDADERAS
+    private Hashtable<NotNullInteger, Pelicula> peliculasPorId;
+    private LinkedList<Review> reviews;
+
+    //Constructor vacío
+    public FirstReport() {
+    }
+
+    //Constructor completo
+    public FirstReport(Hashtable<NotNullInteger, Pelicula> peliculasPorId, LinkedList<Review> reviews) {
+        this.peliculasPorId = peliculasPorId;
+        this.reviews = reviews;
+    }
+
+
+    public void firstReport() {
+
+        // PASO 1: Crear HASH que tenga como clave id_Película y que guarde la cantidad de reviews que tenga
+        Hashtable<NotNullInteger, Integer> conteoPorPelicula = new Hashtable<>();
+
+        // Recorremos la lista de reviews y cada vez que veamos una película repetida
+        // Aumentamos el contador de películas en el HASH donde esta la id de la pelicula en cuestión
+
+        for (Review review : reviews) {
+            NotNullInteger idPelicula_review = review.getPelicula().getId();
+            Integer nroReviews = conteoPorPelicula.get(idPelicula_review);
+
+            // Si el bucket está vacío, entonces lo inicialicamo en 0
+            if (nroReviews == null) {
+                nroReviews = 0;
+            }
+            conteoPorPelicula.put(idPelicula_review, nroReviews + 1);
+        }
+
+
+        // Paso 2: recorrer idiomas
+        String[] idiomas = {"en", "fr", "it", "es", "pt"};
+
+        for (String idioma : idiomas) {
+            ArrayList<PeliculaConConteo> ranking = new ArrayList<>();
+
+            // Agregamos a ranking las peliculas con el idioma seleccionado
+            for (Pelicula pelicula : peliculasPorId.values()) {
+                //Check de si la pelicula es de el idioma seleccionado
+                if (pelicula.getOriginalLanguage().equals(idioma)) {
+                    Integer conteo = conteoPorPelicula.get(pelicula.getId());
+                    if (conteo != null && conteo > 0) {
+                        ranking.add(new PeliculaConConteo(pelicula, conteo));
+                    }
+                }
+            }
+
+            ordenarPorConteoDescendente(ranking);
+
+            // Imprimir Top 5
+            int i = 0;
+            for (PeliculaConConteo p : ranking) {
+                if (i++ == 5) {
+                    break;
+                }
+                System.out.println(p.getPelicula().getId() + "," +
+                        p.getPelicula().getTitle() + "," +
+                        p.getConteo() + "," +
+                        p.getPelicula().getOriginalLanguage());
+            }
+
+        }
+    }
+
+    // Algoritmo de ordenamiento (CAMBIAR CUALQUIER COSA)
+    private void ordenarPorConteoDescendente(ArrayList<PeliculaConConteo> lista) {
+        QuickSort<PeliculaConConteo> sortQ = new QuickSort<>();
+        sortQ.quickSort(lista);
+    }
+}

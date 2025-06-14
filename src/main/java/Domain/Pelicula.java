@@ -9,14 +9,14 @@ public class Pelicula {
     private final NotNullInteger id;
     private final NotBlankString title;
     private final int budget;
-    private NotBlankString originalLanguage;
+    private String originalLanguage;
     private MyList<Review> reviews;
     private final HashCerrado<String,Boolean> generos ;
     private int revenue;
     private int income;
 
     //Complete Constructor
-    public Pelicula(NotNullInteger id, NotBlankString title, int budget, NotBlankString originalLanguage, int revenue, int ingresos) {
+    public Pelicula(NotNullInteger id, NotBlankString title, int budget, String originalLanguage, int revenue, int ingresos) {
         this.id = id;
         this.title = title;
         this.budget = budget;
@@ -44,11 +44,11 @@ public class Pelicula {
         return budget;
     }
 
-    public NotBlankString getOriginalLanguage() {
+    public String getOriginalLanguage() {
         return originalLanguage;
     }
 
-    public void setOriginalLanguage(NotBlankString originalLanguage) {
+    public void setOriginalLanguage(String originalLanguage) {
         this.originalLanguage = originalLanguage;
     }
 

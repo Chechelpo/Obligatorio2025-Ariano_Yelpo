@@ -11,7 +11,10 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 class PeliculaLoader {
     private SagaManager sagaManager;
@@ -36,8 +39,7 @@ class PeliculaLoader {
         return peliculaManager;
     }
 
-    public void cargarPeliculas(String pathCsv) {
-
+    public void cargarPeliculas(InputStream csvStream) {
         CSVFormat format = CSVFormat.Builder.create()
                 .setHeader()
                 .setIgnoreHeaderCase(true)
@@ -45,7 +47,7 @@ class PeliculaLoader {
                 .build();
 
         try (
-                Reader reader = new FileReader(pathCsv);
+                Reader reader = new InputStreamReader(csvStream, StandardCharsets.UTF_8);
                 CSVParser parser = new CSVParser(reader, format)
         ) {
             for (CSVRecord record : parser) {
@@ -67,8 +69,8 @@ class PeliculaLoader {
                     int budget = parseSafeInt(budgetStr);
                     int revenue = parseSafeInt(revenueStr);
 
-                    //Se encarga de buscar y/o anadir la nueva pelicula
-                    Pelicula pelicula = peliculaManager.managePelicula(id,title,budget,lang,revenue);
+                    // Se encarga de buscar y/o añadir la nueva película
+                    Pelicula pelicula = peliculaManager.managePelicula(id, title, budget, lang, revenue);
 
                     // Registrar saga (puede generar una unitaria si no hay JSON válido)
                     String belongsToCollection = record.get("belongs_to_collection");
@@ -78,11 +80,9 @@ class PeliculaLoader {
                     String genresRaw = record.get("genres");
                     generoManager.registrarGeneros(pelicula, genresRaw);
 
-
-                } catch (NumberFormatException e) {
-                    // ID no válido u otro número mal formado → ignorar
+                } catch (NumberFormatException ignored) {
                 } catch (Exception e) {
-                    System.err.println("Error procesando una película: " + e.getMessage());
+                    System.err.println("Error procesando la película de titulo : " + e.getMessage());
                 }
             }
 
@@ -90,6 +90,7 @@ class PeliculaLoader {
             System.err.println("Error al leer el archivo de películas: " + e.getMessage());
         }
     }
+
 
     private int parseSafeInt(String value) {
         try {

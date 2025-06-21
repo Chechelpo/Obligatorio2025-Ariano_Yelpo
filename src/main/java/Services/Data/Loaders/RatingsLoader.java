@@ -10,7 +10,10 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 class RatingsLoader {
     UserManager userManager;
@@ -20,8 +23,7 @@ class RatingsLoader {
         this.userManager = new UserManager();
         this.peliculaManager = peliculaManager;
     }
-    public void cargarRatings(String pathCsv)
-    {
+    public void cargarRatings(InputStream csvStream) {
         CSVFormat format = CSVFormat.Builder.create()
                 .setHeader()
                 .setIgnoreHeaderCase(true)
@@ -29,7 +31,7 @@ class RatingsLoader {
                 .build();
 
         try (
-                Reader reader = new FileReader(pathCsv);
+                Reader reader = new InputStreamReader(csvStream, StandardCharsets.UTF_8);
                 CSVParser parser = new CSVParser(reader, format)
         ) {
             for (CSVRecord record : parser) {
@@ -39,14 +41,14 @@ class RatingsLoader {
                     double rating = Double.parseDouble(record.get("rating"));
                     long timestamp = Long.parseLong(record.get("timestamp"));
 
-
-                    //Buscamos si esta el usuario, la funcion se encarga de crearlo si no esta registrado todavia
+                    // Buscamos si está el usuario, la función se encarga de crearlo si no está registrado todavía
                     Usuario user = userManager.getUserByID(userId);
-                    //Buscamos las peliculas anteriores
+
+                    // Buscamos la película
                     Pelicula pelicula = peliculaManager.buscarPelicula(movieId);
                     if (pelicula == null) continue; // Si la película no existe, ignoramos
 
-                    Review review = new Review(rating,user,pelicula,timestamp);
+                    Review review = new Review(rating, user, pelicula, timestamp);
 
                     // Asignar review a usuario y película
                     user.addReview(review);
@@ -61,4 +63,5 @@ class RatingsLoader {
             System.err.println("Error al cargar ratings: " + e.getMessage());
         }
     }
+
 }

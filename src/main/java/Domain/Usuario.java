@@ -7,7 +7,7 @@ import Utils.SimpleLinkedList.MyLinkedList;
 import java.util.List;
 
 public class Usuario {
-    private final MyLinkedList<Object> reviews;
+    private final MyLinkedList<Review> reviews;
     private NotNullInteger id;
 
     //Complete Constructor
@@ -25,12 +25,8 @@ public class Usuario {
         this.id = id;
     }
 
-    public List<Review> getReviews() {
+    public MyList<Review> getReviews() {
         return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
     }
 
     public void addReview(Review review) {

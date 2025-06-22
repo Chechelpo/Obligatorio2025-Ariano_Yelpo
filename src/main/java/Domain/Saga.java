@@ -12,13 +12,13 @@ import java.util.List;
 public class Saga {
     private NotNullInteger id;
     private NotBlankString title;
-    private MyList<Pelicula> movies;
+    private LinkedList<Pelicula> movies;
 
     //Complete Constructor
     public Saga(NotNullInteger id, NotBlankString title) {
         this.id = id;
         this.title = title;
-        this.movies = new MyLinkedList<Pelicula>();
+        this.movies = new LinkedList<Pelicula>();
     }
 
     //Getters and Setters
@@ -34,7 +34,7 @@ public class Saga {
         this.title = title;
     }
 
-    public MyList<Pelicula> getMovies() {
+    public LinkedList<Pelicula> getMovies() {
         return movies;
     }
     public void agregarPelicula(Pelicula pelicula) {

@@ -1,35 +1,44 @@
 package Services.Data.Loaders;
 
+import Domain.Actor;
 import Domain.Director;
 import Domain.Pelicula;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
 import Services.Data.managers.PeliculaManager;
+import Utils.HashTable.HashTable;
+import Interfaces.MyHashTable;
+import Utils.HashTableCerrado.HashCerrado;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 public class CreditsLoader {
-/*    private PeliculaManager peliculaManager;
+    private final PeliculaManager peliculaManager;
+    private final HashCerrado<NotNullInteger, Director> directores = new HashCerrado<>(20000);
+    private final MyHashTable<NotNullInteger, Actor> actores = new HashTable<>();
 
     public CreditsLoader(PeliculaManager peliculaManager) {
-        this.peliculaManager = new PeliculaManager();
+        this.peliculaManager = peliculaManager;
     }
 
-    public void cargarCredits(String pathCsv) {
-        CSVFormat format = CSVFormat.Builder.create()
+    public void cargarCredits(InputStream csvStream) {
+       CSVFormat format = CSVFormat.Builder.create()
                 .setHeader()
                 .setIgnoreHeaderCase(true)
                 .setTrim(true)
                 .build();
 
         try (
-                Reader reader = new FileReader(pathCsv);
+                Reader reader = new InputStreamReader(csvStream, StandardCharsets.UTF_8);
                 CSVParser parser = new CSVParser(reader, format)
         ) {
             for (CSVRecord record : parser) {
@@ -37,17 +46,29 @@ public class CreditsLoader {
                     NotNullInteger peliculaId = new NotNullInteger(Integer.parseInt(record.get("id")));
                     Pelicula pelicula = peliculaManager.buscarPelicula(peliculaId);
                     if (pelicula == null) continue;
-
+                    System.out.println(pelicula.getTitle());
                     // ---------- Actores ----------
-                    String rawCast = record.get("cast");
-                    JSONArray castArray = new JSONArray(rawCast);
+                    try {
+                        String rawCast = record.get("cast");
+                        JSONArray castArray = new JSONArray(rawCast);
+                        System.out.println("Converted cast: " + castArray);
 
-                    for (int i = 0; i < castArray.length(); i++) {
-                        JSONObject actorJson = castArray.getJSONObject(i);
-                        NotNullInteger actorId = new NotNullInteger(actorJson.getInt("id"));
-                        NotBlankString actorName = new NotBlankString(actorJson.getString("name"));
+                        for (int i = 0; i < castArray.length(); i++) {
+                            JSONObject actorJson = castArray.getJSONObject(i);
+                            NotNullInteger actorId = new NotNullInteger(actorJson.getInt("id"));
+                            NotBlankString actorName = new NotBlankString(actorJson.getString("name"));
+                            System.out.println(actorJson.getString("name"));
 
+                            Actor actor = actores.get(actorId);
+                            if (actor == null) {
+                                actor = new Actor(actorId, actorName);
+                                actores.put(actorId, actor);
+                            }
 
+                            actor.agregarPelicula(pelicula);      // Actor → Película
+                        }
+                    }catch (JSONException e){
+                        System.out.println("error in cast " + e.getMessage());
                     }
 
                     // ---------- Director ----------
@@ -66,8 +87,8 @@ public class CreditsLoader {
                                 directores.put(dirId, director);
                             }
 
-                            director.agregarPelicula(pelicula);
-                            break; // Solo 1 director principal
+                            director.agregarPelicula(pelicula); // Asignar al objeto Pelicula
+                            break;
                         }
                     }
 
@@ -81,5 +102,12 @@ public class CreditsLoader {
         }
     }
 
- */
+    public HashCerrado<NotNullInteger, Director> getDirectores() {
+        return directores;
+    }
+
+    public MyHashTable<NotNullInteger, Actor> getActores() {
+        return actores;
+    }
 }
+

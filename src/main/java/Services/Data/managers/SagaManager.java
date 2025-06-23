@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public class SagaManager {
     private final HashCerrado<NotNullInteger, Saga> sagas;
     public SagaManager() {
-        sagas = new HashCerrado<>(50000);
+        sagas = new HashCerrado<>(45000);
     }
 
     public HashCerrado<NotNullInteger, Saga> getSagas() {

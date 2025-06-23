@@ -52,8 +52,6 @@ class RatingsLoader {
 
                     // Asignar review a usuario y película
                     user.addReview(review);
-                    pelicula.getReviews().add(review);
-
                 } catch (Exception e) {
                     // Línea inválida, la ignoramos
                 }

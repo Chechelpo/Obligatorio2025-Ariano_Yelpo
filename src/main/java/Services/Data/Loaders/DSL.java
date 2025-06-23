@@ -1,5 +1,6 @@
 package Services.Data.Loaders;
 
+import Domain.Director;
 import Domain.Pelicula;
 import Domain.Saga;
 import Interfaces.MyHashTable;
@@ -21,7 +22,9 @@ public class DSL {
     public DSL() {
         this.peliculaLoader = new PeliculaLoader();
     }
-
+    public HashCerrado<NotNullInteger, Director> getDirectors() {
+        return creditsLoader.getDirectores();
+    }
     public MyHashTable<NotNullInteger, Pelicula> getPeliculasPorID() {
         return peliculaLoader.getPeliculaManager().getPeliculas();
     }
@@ -53,6 +56,7 @@ public class DSL {
     private void firstPhase() {
         InputStream csvStream = getResourceStream(MOVIES_METADATA_CSV);
         peliculaLoader.cargarPeliculas(csvStream);
+        System.out.println("Finished loading movies.csv");
     }
 
     private void secondPhase(PeliculaManager peliculaManager) {
@@ -60,18 +64,19 @@ public class DSL {
         this.setRatingsLoader(ratingsLoader);
         InputStream csvStream = getResourceStream(RATINGS_CSV);
         ratingsLoader.cargarRatings(csvStream);
+        System.out.println("Finished loading ratings.csv");
     }
 
     private void thirdPhase(PeliculaManager peliculaManager) {
-        /*CreditsLoader creditsLoader = new CreditsLoader(peliculaManager);
+        CreditsLoader creditsLoader = new CreditsLoader(peliculaManager);
         this.setCreditsLoader(creditsLoader);
         InputStream csvStream = getResourceStream(CREDITS_CSV);
-        creditsLoader.cargarCredits(csvStream);*/
+        creditsLoader.cargarCredits(csvStream);
     }
 
     public void start() {
         firstPhase();
         secondPhase(peliculaLoader.getPeliculaManager());
-        // thirdPhase(peliculaLoader.getPeliculaManager());
+        thirdPhase(peliculaLoader.getPeliculaManager());
     }
 }

@@ -5,18 +5,21 @@ import Interfaces.MyHashTable;
 import java.util.Iterator;
 
 @SuppressWarnings("unchecked")
-public class HashTable<K, V> implements Iterable<Entry<K, V>>, MyHashTable<K,V> {
-    private static final int INITIAL_CAPACITY = 500000;
+public class HashTable<K, V> implements Iterable<Entry<K, V>>, MyHashTable<K, V> {
     private static final double LOAD_FACTOR = 0.75;
 
     private LinkedListHash<K, V>[] buckets;
     private int size;
     private int capacity;
 
-    public HashTable() {
-        this.capacity = INITIAL_CAPACITY;
+    public HashTable(int initialCapacity) {
+        this.capacity = initialCapacity;
         this.buckets = new LinkedListHash[capacity];
         this.size = 0;
+    }
+
+    public HashTable() {
+        this(32); // Valor por defecto si no se especifica
     }
 
     private int getIndex(K key) {
@@ -25,6 +28,10 @@ public class HashTable<K, V> implements Iterable<Entry<K, V>>, MyHashTable<K,V> 
     }
 
     public void put(K key, V value) {
+        if ((double) size / capacity > LOAD_FACTOR) {
+            rehash();
+        }
+
         int index = getIndex(key);
         if (buckets[index] == null) {
             buckets[index] = new LinkedListHash<>();
@@ -35,10 +42,6 @@ public class HashTable<K, V> implements Iterable<Entry<K, V>>, MyHashTable<K,V> 
         }
 
         buckets[index].addOrReplace(key, value);
-
-        if ((double) size / capacity > LOAD_FACTOR) {
-            rehash();
-        }
     }
 
     public V get(K key) {
@@ -113,4 +116,3 @@ public class HashTable<K, V> implements Iterable<Entry<K, V>>, MyHashTable<K,V> 
         };
     }
 }
-

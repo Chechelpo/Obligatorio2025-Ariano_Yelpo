@@ -108,6 +108,7 @@ public class HashCerrado<K, V> implements Interfaces.HashCerrado<K, V> {
 
     @SuppressWarnings("unchecked")
     private void rehash() {
+        System.out.println("🔁 Rehash ejecutado. Nueva capacidad: " + capacidad);
         Entrada<K, V>[] viejaTabla = tabla;
         capacidad *= 2;
         tabla = (Entrada<K, V>[]) new Entrada[capacidad];

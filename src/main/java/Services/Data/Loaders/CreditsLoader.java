@@ -1,3 +1,4 @@
+// Turbo CreditsLoader.java sin hilos (versión secuencial optimizada)
 package Services.Data.Loaders;
 
 import Domain.Actor;
@@ -13,7 +14,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
@@ -24,14 +24,14 @@ import java.nio.charset.StandardCharsets;
 public class CreditsLoader {
     private final PeliculaManager peliculaManager;
     private final HashCerrado<NotNullInteger, Director> directores = new HashCerrado<>(20000);
-    private final MyHashTable<NotNullInteger, Actor> actores = new HashTable<>();
+    private final MyHashTable<NotNullInteger, Actor> actores = new HashTable<>(100000);
 
     public CreditsLoader(PeliculaManager peliculaManager) {
         this.peliculaManager = peliculaManager;
     }
 
     public void cargarCredits(InputStream csvStream) {
-       CSVFormat format = CSVFormat.Builder.create()
+        CSVFormat format = CSVFormat.Builder.create()
                 .setHeader()
                 .setIgnoreHeaderCase(true)
                 .setTrim(true)
@@ -41,37 +41,29 @@ public class CreditsLoader {
                 Reader reader = new InputStreamReader(csvStream, StandardCharsets.UTF_8);
                 CSVParser parser = new CSVParser(reader, format)
         ) {
+            int count = 0;
             for (CSVRecord record : parser) {
                 try {
                     NotNullInteger peliculaId = new NotNullInteger(Integer.parseInt(record.get("id")));
                     Pelicula pelicula = peliculaManager.buscarPelicula(peliculaId);
                     if (pelicula == null) continue;
-                    System.out.println(pelicula.getTitle());
-                    // ---------- Actores ----------
-                    try {
-                        String rawCast = record.get("cast");
-                        JSONArray castArray = new JSONArray(rawCast);
-                        System.out.println("Converted cast: " + castArray);
 
-                        for (int i = 0; i < castArray.length(); i++) {
-                            JSONObject actorJson = castArray.getJSONObject(i);
-                            NotNullInteger actorId = new NotNullInteger(actorJson.getInt("id"));
-                            NotBlankString actorName = new NotBlankString(actorJson.getString("name"));
-                            System.out.println(actorJson.getString("name"));
+                    String rawCast = record.get("cast");
+                    JSONArray castArray = new JSONArray(rawCast);
 
-                            Actor actor = actores.get(actorId);
-                            if (actor == null) {
-                                actor = new Actor(actorId, actorName);
-                                actores.put(actorId, actor);
-                            }
+                    for (int i = 0; i < castArray.length(); i++) {
+                        JSONObject actorJson = castArray.getJSONObject(i);
+                        NotNullInteger actorId = new NotNullInteger(actorJson.getInt("id"));
+                        NotBlankString actorName = new NotBlankString(actorJson.getString("name"));
 
-                            actor.agregarPelicula(pelicula);      // Actor → Película
+                        Actor actor = actores.get(actorId);
+                        if (actor == null) {
+                            actor = new Actor(actorId, actorName);
+                            actores.put(actorId, actor);
                         }
-                    }catch (JSONException e){
-                        System.out.println("error in cast " + e.getMessage());
+                        actor.agregarPelicula(pelicula);
                     }
 
-                    // ---------- Director ----------
                     String rawCrew = record.get("crew");
                     JSONArray crewArray = new JSONArray(rawCrew);
 
@@ -86,14 +78,15 @@ public class CreditsLoader {
                                 director = new Director(dirId, dirName);
                                 directores.put(dirId, director);
                             }
-
-                            director.agregarPelicula(pelicula); // Asignar al objeto Pelicula
+                            director.agregarPelicula(pelicula);
                             break;
                         }
                     }
 
-                } catch (Exception e) {
-                    // Registro inválido → ignorar
+                    if (++count % 10000 == 0)
+                        System.out.println("Credits cargados: " + count);
+
+                } catch (Exception ignored) {
                 }
             }
 
@@ -110,4 +103,3 @@ public class CreditsLoader {
         return actores;
     }
 }
-

@@ -19,7 +19,7 @@ class DSLTest {
 
         MyHashTable<NotNullInteger, Pelicula> peliculasPorID = dsl.getPeliculasPorID();
         HashCerrado<NotNullInteger, Saga> sagasPorID = dsl.getSagasPorID();
-
+        System.out.println(sagasPorID.size());
         assertEquals(new NotBlankString("Jumanji"),peliculasPorID.get(new NotNullInteger(8844)).getTitle());
 
         assertEquals(new NotBlankString("Grumpy Old Men Collection"),sagasPorID.get(new NotNullInteger(119050)).getTitle());

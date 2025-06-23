@@ -20,7 +20,7 @@ public class Pelicula {
         this.title = title;
         this.originalLanguage = originalLanguage;
         this.income = budget - revenue;
-        this.generos = new HashCerrado<>(10);
+        this.generos = new HashCerrado<>(15);
     }
 
     //Getters and setters

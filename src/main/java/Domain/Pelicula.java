@@ -36,12 +36,12 @@ public class Pelicula {
     }
 
 
-    public NotBlankString getOriginalLanguage() {
-        return originalLanguage;
+    public String getOriginalLanguage() {
+        return originalLanguage.getValue();
     }
 
-    public void setOriginalLanguage(NotBlankString originalLanguage) {
-        this.originalLanguage = originalLanguage;
+    public void setOriginalLanguage(String originalLanguage) {
+        this.originalLanguage = new NotBlankString(originalLanguage);
     }
 
 

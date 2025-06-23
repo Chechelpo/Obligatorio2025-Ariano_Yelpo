@@ -7,8 +7,9 @@ package Semantics;
  */
 public class NotNullInteger implements Comparable<NotNullInteger> {
     private int value;
+
     public NotNullInteger(int value) {
-        if(value == 0){
+        if (value == 0) {
             throw new IllegalArgumentException("Value cannot be zero");
         }
         this.value = value;
@@ -17,8 +18,9 @@ public class NotNullInteger implements Comparable<NotNullInteger> {
     public int getValue() {
         return value;
     }
+
     public void setValue(int value) {
-        if(value == 0){
+        if (value == 0) {
             throw new IllegalArgumentException("Value cannot be zero");
         }
         this.value = value;
@@ -27,15 +29,20 @@ public class NotNullInteger implements Comparable<NotNullInteger> {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if(obj instanceof NotNullInteger){
-            return this.value == ((NotNullInteger)obj).value;
+        if (obj instanceof NotNullInteger) {
+            return this.value == ((NotNullInteger) obj).value;
         }
         return false;
     }
 
     @Override
+    public int hashCode() {
+        return Integer.hashCode(value);
+    }
+
+    @Override
     public String toString() {
-    return Integer.toString(value);
+        return Integer.toString(value);
     }
 
     @Override

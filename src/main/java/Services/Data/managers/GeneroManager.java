@@ -19,6 +19,7 @@ public class GeneroManager {
                 if(!pelicula.getGenero().containsKey(nombre)) pelicula.addGenre(nombre);
 
                 generos.put(nombre,true);
+                pelicula.getGenero().put(nombre,true);
             }
         } catch (Exception e) {
             // JSON inválido: lo ignoramos

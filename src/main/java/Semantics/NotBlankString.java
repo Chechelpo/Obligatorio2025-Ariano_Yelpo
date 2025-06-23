@@ -7,7 +7,7 @@ package Semantics;
 public class NotBlankString implements Comparable<NotBlankString> {
     private final String value;
     public NotBlankString(String value) {
-        if(value == null || value.isBlank()) throw new IllegalArgumentException("Blank or null string");
+        if(value == null || value.isBlank()) throw new IllegalArgumentException("Blank or null string in critical attribute");
         this.value = value;
     }
 

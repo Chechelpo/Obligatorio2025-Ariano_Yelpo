@@ -1,27 +1,36 @@
+// Turbo CreditsLoader.java sin hilos (versión secuencial optimizada)
 package Services.Data.Loaders;
 
+import Domain.Actor;
 import Domain.Director;
 import Domain.Pelicula;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
 import Services.Data.managers.PeliculaManager;
+import Utils.HashTable.HashTable;
+import Interfaces.MyHashTable;
+import Utils.HashTableCerrado.HashCerrado;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 
 public class CreditsLoader {
-/*    private PeliculaManager peliculaManager;
+    private final PeliculaManager peliculaManager;
+    private final HashCerrado<NotNullInteger, Director> directores = new HashCerrado<>(20000);
+    private final MyHashTable<NotNullInteger, Actor> actores = new HashTable<>(100000);
 
     public CreditsLoader(PeliculaManager peliculaManager) {
-        this.peliculaManager = new PeliculaManager();
+        this.peliculaManager = peliculaManager;
     }
 
-    public void cargarCredits(String pathCsv) {
+    public void cargarCredits(InputStream csvStream) {
         CSVFormat format = CSVFormat.Builder.create()
                 .setHeader()
                 .setIgnoreHeaderCase(true)
@@ -29,16 +38,16 @@ public class CreditsLoader {
                 .build();
 
         try (
-                Reader reader = new FileReader(pathCsv);
+                Reader reader = new InputStreamReader(csvStream, StandardCharsets.UTF_8);
                 CSVParser parser = new CSVParser(reader, format)
         ) {
+            int count = 0;
             for (CSVRecord record : parser) {
                 try {
                     NotNullInteger peliculaId = new NotNullInteger(Integer.parseInt(record.get("id")));
                     Pelicula pelicula = peliculaManager.buscarPelicula(peliculaId);
                     if (pelicula == null) continue;
 
-                    // ---------- Actores ----------
                     String rawCast = record.get("cast");
                     JSONArray castArray = new JSONArray(rawCast);
 
@@ -47,10 +56,14 @@ public class CreditsLoader {
                         NotNullInteger actorId = new NotNullInteger(actorJson.getInt("id"));
                         NotBlankString actorName = new NotBlankString(actorJson.getString("name"));
 
-
+                        Actor actor = actores.get(actorId);
+                        if (actor == null) {
+                            actor = new Actor(actorId, actorName);
+                            actores.put(actorId, actor);
+                        }
+                        actor.agregarPelicula(pelicula);
                     }
 
-                    // ---------- Director ----------
                     String rawCrew = record.get("crew");
                     JSONArray crewArray = new JSONArray(rawCrew);
 
@@ -65,14 +78,15 @@ public class CreditsLoader {
                                 director = new Director(dirId, dirName);
                                 directores.put(dirId, director);
                             }
-
                             director.agregarPelicula(pelicula);
-                            break; // Solo 1 director principal
+                            break;
                         }
                     }
 
-                } catch (Exception e) {
-                    // Registro inválido → ignorar
+                    if (++count % 10000 == 0)
+                        System.out.println("Credits cargados: " + count);
+
+                } catch (Exception ignored) {
                 }
             }
 
@@ -81,5 +95,11 @@ public class CreditsLoader {
         }
     }
 
- */
+    public HashCerrado<NotNullInteger, Director> getDirectores() {
+        return directores;
+    }
+
+    public MyHashTable<NotNullInteger, Actor> getActores() {
+        return actores;
+    }
 }

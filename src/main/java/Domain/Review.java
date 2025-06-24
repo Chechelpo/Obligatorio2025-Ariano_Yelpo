@@ -22,6 +22,14 @@ public class Review {
                 .toLocalDate();
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
     //Getters and Setters
     public double getEvaluation() {
         return evaluation;

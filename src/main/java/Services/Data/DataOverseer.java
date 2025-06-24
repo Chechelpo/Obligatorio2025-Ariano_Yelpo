@@ -16,17 +16,23 @@ public class DataOverseer {
     private final HashCerrado<NotNullInteger, Saga> sagasPorID;
     private final HashCerrado<NotNullInteger, Director> directorPorID;
     private final MyList<Review> reviews;
+    private final HashCerrado<String,Boolean> generos;
+
     public DataOverseer() {
         dataServiceLoader.start();
         this.peliculasPorId = dataServiceLoader.getPeliculasPorID();
         this.sagasPorID= dataServiceLoader.getSagasPorID();
         this.directorPorID = dataServiceLoader.getDirectors();
         this.reviews = dataServiceLoader.getReviews();
-        System.out.println(reviews.getSize());
+        this.generos = dataServiceLoader.getGeneros();
     }
 
     public MyHashTable<NotNullInteger, Pelicula> getPeliculasPorId() {
         return peliculasPorId;
+    }
+
+    public HashCerrado<String, Boolean> getGeneros() {
+        return generos;
     }
 
     public HashCerrado<NotNullInteger, Saga> getSagasPorID() {

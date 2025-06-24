@@ -18,7 +18,7 @@ public class FourthReport {
         ArrayList<ResultadoDirector> resultados = new ArrayList<>();
 
         // Revisamos cada director
-        for (Director d : directores) {
+        for (Director d : directores.values()) {
 
             //Para el director creamos una lista que contenga todas las calificaciones de sus películas
             ArrayList<Double> todasLasNotas = new ArrayList<>();

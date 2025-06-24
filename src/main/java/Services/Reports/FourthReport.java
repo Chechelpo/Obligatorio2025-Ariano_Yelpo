@@ -1,86 +1,82 @@
 package Services.Reports;
 
 import Domain.Director;
+import Domain.ResultadoDirector;
 import Interfaces.HashCerrado;
 import Semantics.NotNullInteger;
 import Domain.Review;
 import Interfaces.MyList;
-import Utils.HashTableCerrado.MyHashCerrado;
+import Utils.QuickSort.QuickSort;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class FourthReport {
+
     public static void fourthReport(HashCerrado<NotNullInteger, Director> directores, MyList<Review> reviews) {
-        HashCerrado<String, ArrayList<Double>> calificacionesPorDirector = new MyHashCerrado<>(50);
-        HashCerrado<String, Integer> cantidadPeliculasPorDirector = new MyHashCerrado<>(50);
 
-        // Mapear id_pelicula → calificaciones (para eficiencia)
-        HashCerrado<Integer, ArrayList<Double>> calificacionesPorPelicula = new MyHashCerrado<>(1000);
-        for (Review r : reviews) {
-            int id = r.getPelicula().getId().getValue();
-            if (!calificacionesPorPelicula.containsKey(id)) {
-                calificacionesPorPelicula.put(id, new ArrayList<>());
-            }
-            calificacionesPorPelicula.get(id).add(r.getEvaluation());
-        }
+        ArrayList<ResultadoDirector> resultados = new ArrayList<>();
 
-        // Para cada director, juntar calificaciones de sus películas
+        // Revisamos cada director
         for (Director d : directores) {
-            ArrayList<Double> todasLasNotas = new ArrayList<>();
-            int cantidadPeliculas = 0;
-            int totalReviews = 0;
 
+            //Para el director creamos una lista que contenga todas las calificaciones de sus películas
+            ArrayList<Double> todasLasNotas = new ArrayList<>();
+
+            //Contador de cantidad de películas
+            int cantidadPeliculas = 0;
+
+            //Revisamos todas las películas del director (las keys de su hashtable son las id de las peliculas, que es lo único que necesitamos)
             for (NotNullInteger idPelicula : d.getDirectedMovies().keys()) {
-                ArrayList<Double> calificaciones = calificacionesPorPelicula.get(idPelicula.getValue());
-                if (calificaciones != null && !calificaciones.isEmpty()) {
-                    todasLasNotas.addAll(calificaciones);
-                    totalReviews += calificaciones.size();
+                int reviewsPorPelicula = 0;
+
+                //En la lista de reviews buscamos todas las reviews asociadas a la película en cuestion
+                for (Review r : reviews) {
+                    if (r.getPelicula().getId().equals(idPelicula)) {
+                        todasLasNotas.add(r.getEvaluation()); //agregamos a la lista de notas la evaluacion de esta review
+                        reviewsPorPelicula++;
+                    }
+                }
+
+                // Aumentamos la cantidad de películas 1 sola vez si para esat película encontramos al menos 1 review
+                if (reviewsPorPelicula > 0) {
                     cantidadPeliculas++;
                 }
             }
 
-            if (cantidadPeliculas > 1 && totalReviews > 100) {
-                calificacionesPorDirector.put(d.getName().getValue(), todasLasNotas);
-                cantidadPeliculasPorDirector.put(d.getName().getValue(), cantidadPeliculas);
+            //Filtro
+            if (cantidadPeliculas > 1 && todasLasNotas.size() > 100) {
+                //Ordenamos la lista de todas las notas para hallar la mediana (el valor en medio de la lista ordenada)
+                ordenarTodasLasNotas(todasLasNotas);
+                double mediana;
+                int n = todasLasNotas.size();
+                if (n % 2 == 0) {
+                    mediana = (todasLasNotas.get(n / 2 - 1) + todasLasNotas.get(n / 2)) / 2.0;
+                } else {
+                    mediana = todasLasNotas.get(n / 2);
+                }
+                resultados.add(new ResultadoDirector(d.getName().getValue(), cantidadPeliculas, mediana));
             }
         }
 
-        // Crear lista ordenada por mediana
-        ArrayList<ResultadoDirector> resultados = new ArrayList<>();
+        //La lista resultados tiene clases del tipo ResultadoDirector, que tiene todos los datos que necesitamos imprimir de cada director
+        //Esta clase implementa Comparable, y en su metodo compareTo() compara en funcion a la mediana que es lo que queremos
+        ordenarPorMedianaDescendente(resultados);
 
-        for (String nombre : calificacionesPorDirector.keys()) {
-            ArrayList<Double> notas = calificacionesPorDirector.get(nombre);
-            Collections.sort(notas);
-            double mediana;
-            int n = notas.size();
-            if (n % 2 == 0) {
-                mediana = (notas.get(n / 2 - 1) + notas.get(n / 2)) / 2.0;
-            } else {
-                mediana = notas.get(n / 2);
-            }
-            int cantidadPeliculas = cantidadPeliculasPorDirector.get(nombre);
-            resultados.add(new ResultadoDirector(nombre, cantidadPeliculas, mediana));
-        }
-
-        resultados.sort((a, b) -> Double.compare(b.mediana, a.mediana));
-
-        // Imprimir Top 10
         for (int i = 0; i < Math.min(10, resultados.size()); i++) {
             ResultadoDirector r = resultados.get(i);
-            System.out.println(r.nombre + "," + r.cantidadPeliculas + "," + r.mediana);
+            System.out.println(r.getNombre() + "," + r.getCantidadPeliculas() + "," + r.getMediana());
         }
     }
 
-    static class ResultadoDirector {
-        String nombre;
-        int cantidadPeliculas;
-        double mediana;
+    private static void ordenarPorMedianaDescendente(ArrayList<ResultadoDirector> lista) {
+        QuickSort<ResultadoDirector> sortQ = new QuickSort<>();
+        sortQ.quickSort(lista);
+    }
 
-        public ResultadoDirector(String nombre, int cantidadPeliculas, double mediana) {
-            this.nombre = nombre;
-            this.cantidadPeliculas = cantidadPeliculas;
-            this.mediana = mediana;
-        }
+    private static void ordenarTodasLasNotas(ArrayList<Double> todasLasNotas) {
+        QuickSort<Double> sortQ = new QuickSort<>();
+        sortQ.quickSort(todasLasNotas);
     }
 }
+

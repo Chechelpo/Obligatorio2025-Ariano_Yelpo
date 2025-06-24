@@ -38,6 +38,9 @@ public class DSL {
     public RatingsLoader getRatingsLoader() {
         return ratingsLoader;
     }
+    public MyHashCerrado<String,Boolean> getGeneros(){
+        return peliculaLoader.getGeneroManager().getGeneros();
+    }
 
     public MyList<Review> getReviews() {
         return ratingsLoader.reviews;

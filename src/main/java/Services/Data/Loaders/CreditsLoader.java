@@ -30,6 +30,10 @@ public class CreditsLoader {
         this.peliculaManager = peliculaManager;
     }
 
+    public PeliculaManager getPeliculaManager() {
+        return peliculaManager;
+    }
+
     public void cargarCredits(InputStream csvStream) {
         CSVFormat format = CSVFormat.Builder.create()
                 .setHeader()

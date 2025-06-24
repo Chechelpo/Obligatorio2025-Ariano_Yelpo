@@ -1,9 +1,6 @@
 package Services.Data;
 
-import Domain.Director;
-import Domain.Pelicula;
-import Domain.Review;
-import Domain.Saga;
+import Domain.*;
 import Interfaces.HashCerrado;
 import Interfaces.MyHashTable;
 import Interfaces.MyList;
@@ -17,7 +14,7 @@ public class DataOverseer {
     private final HashCerrado<NotNullInteger, Director> directorPorID;
     private final MyList<Review> reviews;
     private final HashCerrado<String,Boolean> generos;
-
+    private final MyHashTable<NotNullInteger, Actor> actors;
     public DataOverseer() {
         dataServiceLoader.start();
         this.peliculasPorId = dataServiceLoader.getPeliculasPorID();
@@ -25,6 +22,11 @@ public class DataOverseer {
         this.directorPorID = dataServiceLoader.getDirectors();
         this.reviews = dataServiceLoader.getReviews();
         this.generos = dataServiceLoader.getGeneros();
+        this.actors = dataServiceLoader.getActors();
+    }
+
+    public MyHashTable<NotNullInteger, Actor> getActors() {
+        return actors;
     }
 
     public MyHashTable<NotNullInteger, Pelicula> getPeliculasPorId() {

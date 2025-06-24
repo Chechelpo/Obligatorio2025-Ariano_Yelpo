@@ -1,9 +1,6 @@
 package Services.Data.Loaders;
 
-import Domain.Director;
-import Domain.Pelicula;
-import Domain.Review;
-import Domain.Saga;
+import Domain.*;
 import Interfaces.MyHashTable;
 import Interfaces.MyList;
 import Semantics.NotNullInteger;
@@ -30,7 +27,9 @@ public class DSL {
     public MyHashTable<NotNullInteger, Pelicula> getPeliculasPorID() {
         return peliculaLoader.getPeliculaManager().getPeliculas();
     }
-
+    public MyHashTable<NotNullInteger, Actor> getActors() {
+        return creditsLoader.getActores();
+    }
     public MyHashCerrado<NotNullInteger, Saga> getSagasPorID() {
         return peliculaLoader.getSagaManager().getSagas();
     }

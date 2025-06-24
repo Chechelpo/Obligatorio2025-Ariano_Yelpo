@@ -3,12 +3,12 @@ package Services.Reports;
 import Domain.Pelicula;
 import Domain.PeliculaConConteo;
 import Domain.Review;
+import Interfaces.MyHashTable;
+import Interfaces.MyList;
 import Semantics.NotNullInteger;
 import Utils.QuickSort.QuickSort;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
 
 /**
  * Tomando en cuenta las películas y las evaluaciones que los usuarios realizaron
@@ -22,22 +22,7 @@ import java.util.LinkedList;
  * **/
 
 public class FirstReport {
-    //ESTAS LISTAS DESPUES HAY QUE CAMBIARLAS POR LAS VERDADERAS
-    private Hashtable<NotNullInteger, Pelicula> peliculasPorId;
-    private LinkedList<Review> reviews;
-
-    //Constructor vacío
-    public FirstReport() {
-    }
-
-    //Constructor completo
-    public FirstReport(Hashtable<NotNullInteger, Pelicula> peliculasPorId, LinkedList<Review> reviews) {
-        this.peliculasPorId = peliculasPorId;
-        this.reviews = reviews;
-    }
-
-
-    public void firstReport() {
+    public static void firstReport(MyHashTable<NotNullInteger, Pelicula> peliculasPorId, MyList<Review> reviews) {
 
         // PASO 1: Crear HASH que tenga como clave id_Película y que guarde la cantidad de reviews que tenga
         Hashtable<NotNullInteger, Integer> conteoPorPelicula = new Hashtable<>();
@@ -70,6 +55,7 @@ public class FirstReport {
             if (conteo != null && conteo > 0) {
                 switch (idioma) {
                     case "en":
+
                         listaEn.add(new PeliculaConConteo(pelicula, conteo));
                         break;
                     case "fr":
@@ -100,7 +86,7 @@ public class FirstReport {
     }
 
     // Método auxiliar para ordenar e imprimir el Top 5 de un idioma
-    private void mostrarTop5PorIdioma(String idioma, ArrayList<PeliculaConConteo> lista) {
+    private static void mostrarTop5PorIdioma(String idioma, ArrayList<PeliculaConConteo> lista) {
         ordenarPorConteoDescendente(lista);
 
         // Imprimir Top 5
@@ -115,7 +101,7 @@ public class FirstReport {
     }
 
     // Algoritmo de ordenamiento (CAMBIAR CUALQUIER COSA)
-    private void ordenarPorConteoDescendente(ArrayList<PeliculaConConteo> lista) {
+    private static void ordenarPorConteoDescendente(ArrayList<PeliculaConConteo> lista) {
         QuickSort<PeliculaConConteo> sortQ = new QuickSort<>();
         sortQ.quickSort(lista);
     }

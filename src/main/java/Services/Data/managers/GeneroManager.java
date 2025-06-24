@@ -1,12 +1,12 @@
 package Services.Data.managers;
 
 import Domain.Pelicula;
-import Utils.HashTableCerrado.HashCerrado;
+import Utils.HashTableCerrado.MyHashCerrado;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class GeneroManager {
-    private final HashCerrado<String,Boolean> generos = new HashCerrado<>(5000);
+    private final MyHashCerrado<String,Boolean> generos = new MyHashCerrado<>(5000);
 
     public void registrarGeneros(Pelicula pelicula, String rawJson) {
         if (rawJson == null || rawJson.isBlank()) return;
@@ -26,7 +26,7 @@ public class GeneroManager {
         }
     }
 
-    public HashCerrado<String, Boolean> getGeneros() {
+    public MyHashCerrado<String, Boolean> getGeneros() {
         return generos;
     }
 }

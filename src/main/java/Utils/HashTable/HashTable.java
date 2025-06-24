@@ -2,7 +2,9 @@ package Utils.HashTable;
 
 import Interfaces.MyHashTable;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 @SuppressWarnings("unchecked")
 public class HashTable<K, V> implements Iterable<Entry<K, V>>, MyHashTable<K, V> {
@@ -70,6 +72,30 @@ public class HashTable<K, V> implements Iterable<Entry<K, V>>, MyHashTable<K, V>
     public boolean isEmpty() {
         return size == 0;
     }
+
+    public Iterable<V> values() {
+        List<V> lista = new ArrayList<>();
+        for (LinkedListHash<K, V> bucket : buckets) {
+            if (bucket != null) {
+                for (Entry<K, V> entry : bucket) {
+                    lista.add(entry.getValue());
+                }
+            }
+        }
+        return lista;
+    }
+    public Iterable<K> keys() {
+        List<K> lista = new ArrayList<>();
+        for (LinkedListHash<K, V> bucket : buckets) {
+            if (bucket != null) {
+                for (Entry<K, V> entry : bucket) {
+                    lista.add(entry.getKey());
+                }
+            }
+        }
+        return lista;
+    }
+
 
     private void rehash() {
         int oldCapacity = capacity;

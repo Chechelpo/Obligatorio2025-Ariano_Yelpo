@@ -1,14 +1,14 @@
 package Domain;
 
+import Interfaces.MyHashTable;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
 import Utils.HashTable.HashTable;
 
-import java.util.List;
 
 public class Director {
     private NotNullInteger id;
-    private HashTable<NotNullInteger,Boolean> directedMovies;
+    private MyHashTable<NotNullInteger,Boolean> directedMovies;
     private NotBlankString name;
 
     //Empty Constructor
@@ -32,7 +32,7 @@ public class Director {
         this.id = id;
     }
 
-    public HashTable<NotNullInteger,Boolean> getDirectedMovies() {
+    public MyHashTable<NotNullInteger,Boolean> getDirectedMovies() {
         return directedMovies;
     }
 
@@ -40,9 +40,7 @@ public class Director {
         return name;
     }
 
-    public void setName(NotBlankString name) {
-        this.name = name;
-    }
+
     public void agregarPelicula(Pelicula pelicula) {
         this.directedMovies.put(pelicula.getId(),true);
     }

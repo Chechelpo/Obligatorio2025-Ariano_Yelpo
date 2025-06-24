@@ -4,7 +4,10 @@ package Utils.HashTableCerrado;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HashCerrado<K, V> implements Interfaces.HashCerrado<K, V> {
+import java.util.Iterator;
+
+public class MyHashCerrado<K, V> implements Interfaces.HashCerrado<K, V>, Iterable<V> {
+
     private static class Entrada<K, V> {
         K clave;
         V valor;
@@ -23,7 +26,7 @@ public class HashCerrado<K, V> implements Interfaces.HashCerrado<K, V> {
     private static final double CARGA_MAXIMA = 0.6;
 
     @SuppressWarnings("unchecked")
-    public HashCerrado(int capacidadInicial) {
+    public MyHashCerrado(int capacidadInicial) {
         this.capacidad = capacidadInicial;
         this.tabla = (Entrada<K, V>[]) new Entrada[capacidad];
         this.size = 0;
@@ -108,7 +111,6 @@ public class HashCerrado<K, V> implements Interfaces.HashCerrado<K, V> {
 
     @SuppressWarnings("unchecked")
     private void rehash() {
-        System.out.println("🔁 Rehash ejecutado. Nueva capacidad: " + capacidad);
         Entrada<K, V>[] viejaTabla = tabla;
         capacidad *= 2;
         tabla = (Entrada<K, V>[]) new Entrada[capacidad];
@@ -120,4 +122,28 @@ public class HashCerrado<K, V> implements Interfaces.HashCerrado<K, V> {
             }
         }
     }
+
+    // 🔁 Iterador de valores
+    @Override
+    public Iterator<V> iterator() {
+        return new Iterator<>() {
+            private int index = 0;
+
+            @Override
+            public boolean hasNext() {
+                while (index < capacidad) {
+                    Entrada<K, V> actual = tabla[index];
+                    if (actual != null && !actual.borrado) return true;
+                    index++;
+                }
+                return false;
+            }
+
+            @Override
+            public V next() {
+                return tabla[index++].valor;
+            }
+        };
+    }
 }
+

@@ -3,11 +3,13 @@ package Services.Reports;
 import Domain.Saga;
 import Domain.Pelicula;
 import Domain.ColeccionConIngresos;
+import Interfaces.HashCerrado;
+import Interfaces.MyList;
+import Semantics.NotNullInteger;
 import Utils.QuickSort.QuickSort;
+import Utils.SimpleLinkedList.MyLinkedList;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Top 5 de las colecciones (sagas) que más ingresos generaron.
@@ -21,27 +23,21 @@ import java.util.List;
  */
 
 public class ThirdReport {
-    private final List<Saga> sagas;
-
-    public ThirdReport(List<Saga> sagas) {
-        this.sagas = sagas;
-    }
-
-    public void thirdReport() {
+    public static void thirdReport(HashCerrado<NotNullInteger,Saga> Saga) {
         ArrayList<ColeccionConIngresos> ranking = new ArrayList<>();
 
         // Paso 1: armar ranking a partir de cada saga
-        for (Saga saga : sagas) {
+        for (Saga saga : Saga) {
 
             //Obtenemos una lista de películas de la saga
-            LinkedList<Pelicula> peliculas = saga.getMovies();
+            MyLinkedList<Pelicula> peliculas = saga.getMovies();
             int ingresosTotales = 0;
-            List<Integer> ids = new ArrayList<>(); //lista de ids de las peliculas de la saga
+            MyList<Integer> ids = new MyLinkedList<>(); //lista de ids de las peliculas de la saga
 
             //Vamos sumando los ingresos de cada pelicula de la saga a ingresos totales
             //Y guardamos la id de cada una
             for (Pelicula pelicula : peliculas) {
-                ingresosTotales += pelicula.getRevenue(); // ingreso por película
+                ingresosTotales += pelicula.getIncome(); // ingreso por película
                 ids.add(pelicula.getId().getValue());     // id de película
             }
 
@@ -64,13 +60,28 @@ public class ThirdReport {
             if (i++ == 5){
                 break;
             }
-
             System.out.println(c.getIdColeccion() + ",");
             System.out.println(c.getNombre() + "," +
                     c.getCantidadPeliculas() + "," +
-                    c.getIdsPeliculas() + "," +
+                    formatearIds(c.getIdsPeliculas()) + "," +
                     c.getIngresos());
         }
     }
+    private static String formatearIds(MyList<Integer> lista) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+
+        boolean primero = true;
+        for (Integer id : lista) {
+            if (!primero) sb.append(",");
+            sb.append(id);
+            primero = false;
+        }
+
+        sb.append("]");
+        return sb.toString();
+    }
+
+
 }
 

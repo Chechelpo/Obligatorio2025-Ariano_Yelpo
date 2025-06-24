@@ -1,12 +1,13 @@
 package Services.Reports;
 
 import Domain.*;
+import Interfaces.MyHashTable;
+import Interfaces.MyList;
 import Semantics.NotNullInteger;
 import Utils.QuickSort.QuickSort;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.LinkedList;
 
 /**
  * Top 10 de las películas que mejor calificación media tienen por parte de los usuarios.
@@ -17,21 +18,7 @@ import java.util.LinkedList;
  */
 
 public class SecondReport {
-    //ESTAS LISTAS DESPUES HAY QUE CAMBIARLAS POR LAS VERDADERAS
-    private Hashtable<NotNullInteger, Pelicula> peliculasPorId;
-    private LinkedList<Review> reviews;
-
-    //Constructor completo
-    public SecondReport(Hashtable<NotNullInteger, Pelicula> peliculasPorId, LinkedList<Review> reviews) {
-        this.peliculasPorId = peliculasPorId;
-        this.reviews = reviews;
-    }
-
-    //Constructor vacío (por las dudas)
-    public SecondReport() {
-    }
-
-    public void secondReport() {
+    public static void secondReport(MyHashTable<NotNullInteger, Pelicula> peliculasPorId, MyList<Review> reviews) {
         // Paso 1: Acumular suma y cantidad de reviews por película
         Hashtable<NotNullInteger, SumaYConteo> mediasPorPelicula = new Hashtable<>();
 

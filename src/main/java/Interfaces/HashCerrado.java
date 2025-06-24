@@ -1,6 +1,6 @@
 package Interfaces;
 
-public interface HashCerrado<K, V> {
+public interface HashCerrado<K, V> extends Iterable<V> {
     void put(K clave, V valor);
     V get(K clave);
     boolean containsKey(K clave);

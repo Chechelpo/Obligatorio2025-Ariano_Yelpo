@@ -10,7 +10,7 @@ public class UserManager {
 
     public Usuario getUserByID(NotNullInteger id) {
         Usuario usuario = usuarios.get(id);
-        if (usuarios==null) {
+        if (usuario==null) {
             createUsuario(id);
             return usuarios.get(id);
         }else return usuario;

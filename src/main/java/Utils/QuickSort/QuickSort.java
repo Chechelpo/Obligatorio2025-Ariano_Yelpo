@@ -9,12 +9,19 @@ public class QuickSort<T extends Comparable<T>> {
     }
 
     private void quickSort(ArrayList<T> lista, int inicio, int fin) {
-        if (inicio >= fin) return;
-
-        int pivotIndex = particionar(lista, inicio, fin);
-        quickSort(lista, inicio, pivotIndex - 1);
-        quickSort(lista, pivotIndex + 1, fin);
+        while (inicio < fin) {
+            int pivotIndex = particionar(lista, inicio, fin);
+            // Procesamos primero el subarreglo más pequeño para limitar la profundidad de la pila
+            if (pivotIndex - inicio < fin - pivotIndex) {
+                quickSort(lista, inicio, pivotIndex - 1);
+                inicio = pivotIndex + 1;
+            } else {
+                quickSort(lista, pivotIndex + 1, fin);
+                fin = pivotIndex - 1;
+            }
+        }
     }
+
 
     private int particionar(ArrayList<T> lista, int inicio, int fin) {
         T pivot = lista.get(fin);

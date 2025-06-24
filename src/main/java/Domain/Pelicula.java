@@ -1,29 +1,28 @@
 package Domain;
 
-import Interfaces.MyList;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
-import Utils.HashTableCerrado.HashCerrado;
+import Utils.HashTableCerrado.MyHashCerrado;
 
 public class Pelicula {
     private final NotNullInteger id;
     private final NotBlankString title;
     private NotBlankString originalLanguage;
-    private final HashCerrado<String, Boolean> generos;
+    private final MyHashCerrado<String, Boolean> generos;
     private final int income;
 
     //Complete Constructor
-    public Pelicula(NotNullInteger id, NotBlankString title, int budget, NotBlankString originalLanguage, int revenue, int ingresos) {
+    public Pelicula(NotNullInteger id, NotBlankString title, int budget, NotBlankString originalLanguage, int revenue) {
         this.id = id;
         this.title = title;
         this.originalLanguage = originalLanguage;
-        this.income = budget - revenue;
-        this.generos = new HashCerrado<>(15);
+        this.income = revenue;
+        this.generos = new MyHashCerrado<>(15);
     }
 
     //Getters and Setters
 
-    public HashCerrado<String, Boolean> getGenero() {
+    public MyHashCerrado<String, Boolean> getGenero() {
         return generos;
     }
 
@@ -35,7 +34,6 @@ public class Pelicula {
         return title;
     }
 
-
     public String getOriginalLanguage() {
         return originalLanguage.getValue();
     }
@@ -46,7 +44,11 @@ public class Pelicula {
 
 
     public int getIncome() {
-        return income;
+        if (income < 0) {
+            System.err.println("⚠ Película con ingreso negativo: " + title.getValue() + " - " + income);
+            return 0;
+        }return income;
+
     }
 
 

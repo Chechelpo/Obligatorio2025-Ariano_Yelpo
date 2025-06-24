@@ -9,7 +9,7 @@ import Semantics.NotNullInteger;
 import Services.Data.managers.PeliculaManager;
 import Utils.HashTable.HashTable;
 import Interfaces.MyHashTable;
-import Utils.HashTableCerrado.HashCerrado;
+import Utils.HashTableCerrado.MyHashCerrado;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
 
 public class CreditsLoader {
     private final PeliculaManager peliculaManager;
-    private final HashCerrado<NotNullInteger, Director> directores = new HashCerrado<>(20000);
+    private final MyHashCerrado<NotNullInteger, Director> directores = new MyHashCerrado<>(20000);
     private final MyHashTable<NotNullInteger, Actor> actores = new HashTable<>(100000);
 
     public CreditsLoader(PeliculaManager peliculaManager) {
@@ -95,7 +95,7 @@ public class CreditsLoader {
         }
     }
 
-    public HashCerrado<NotNullInteger, Director> getDirectores() {
+    public MyHashCerrado<NotNullInteger, Director> getDirectores() {
         return directores;
     }
 

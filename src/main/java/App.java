@@ -1,10 +1,8 @@
-package main.java;
+import ui.Menu;
 
 public class App {
     public static void main(String[] args) {
-        boolean RUNNING = true;
-        while (RUNNING) {
-            RUNNING = false;
-        }
+        Menu menu = new Menu();
+        menu.mostrar();
     }
 }

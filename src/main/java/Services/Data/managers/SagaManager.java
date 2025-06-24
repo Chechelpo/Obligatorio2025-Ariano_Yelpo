@@ -4,17 +4,17 @@ import Domain.Pelicula;
 import Domain.Saga;
 import Semantics.NotBlankString;
 import Semantics.NotNullInteger;
-import Utils.HashTableCerrado.HashCerrado;
+import Utils.HashTableCerrado.MyHashCerrado;
 import org.json.JSONObject;
 
 
 public class SagaManager {
-    private final HashCerrado<NotNullInteger, Saga> sagas;
+    private final MyHashCerrado<NotNullInteger, Saga> sagas;
     public SagaManager() {
-        sagas = new HashCerrado<>(50000);
+        sagas = new MyHashCerrado<>(50000);
     }
 
-    public HashCerrado<NotNullInteger, Saga> getSagas() {
+    public MyHashCerrado<NotNullInteger, Saga> getSagas() {
         return sagas;
     }
 

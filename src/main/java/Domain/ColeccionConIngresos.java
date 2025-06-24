@@ -1,14 +1,14 @@
 package Domain;
 
-import java.util.List;
+import Interfaces.MyList;
 
 public class ColeccionConIngresos implements Comparable<ColeccionConIngresos> {
     private final int idColeccion;
     private final String nombre;
     private final int ingresos;
-    private final List<Integer> idsPeliculas;
+    private final MyList<Integer> idsPeliculas;
 
-    public ColeccionConIngresos(int idColeccion, String nombre, int ingresos, List<Integer> idsPeliculas) {
+    public ColeccionConIngresos(int idColeccion, String nombre, int ingresos, MyList<Integer> idsPeliculas) {
         this.idColeccion = idColeccion;
         this.nombre = nombre;
         this.ingresos = ingresos;
@@ -28,10 +28,10 @@ public class ColeccionConIngresos implements Comparable<ColeccionConIngresos> {
     }
 
     public int getCantidadPeliculas() {
-        return idsPeliculas.size();
+        return idsPeliculas.getSize();
     }
 
-    public List<Integer> getIdsPeliculas() {
+    public MyList<Integer> getIdsPeliculas() {
         return idsPeliculas;
     }
 

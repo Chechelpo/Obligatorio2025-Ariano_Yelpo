@@ -2,11 +2,13 @@ package Services.Data.Loaders;
 
 import Domain.Director;
 import Domain.Pelicula;
+import Domain.Review;
 import Domain.Saga;
 import Interfaces.MyHashTable;
+import Interfaces.MyList;
 import Semantics.NotNullInteger;
 import Services.Data.managers.PeliculaManager;
-import Utils.HashTableCerrado.HashCerrado;
+import Utils.HashTableCerrado.MyHashCerrado;
 
 import java.io.InputStream;
 
@@ -22,14 +24,14 @@ public class DSL {
     public DSL() {
         this.peliculaLoader = new PeliculaLoader();
     }
-    public HashCerrado<NotNullInteger, Director> getDirectors() {
+    public MyHashCerrado<NotNullInteger, Director> getDirectors() {
         return creditsLoader.getDirectores();
     }
     public MyHashTable<NotNullInteger, Pelicula> getPeliculasPorID() {
         return peliculaLoader.getPeliculaManager().getPeliculas();
     }
 
-    public HashCerrado<NotNullInteger, Saga> getSagasPorID() {
+    public MyHashCerrado<NotNullInteger, Saga> getSagasPorID() {
         return peliculaLoader.getSagaManager().getSagas();
     }
 
@@ -37,6 +39,9 @@ public class DSL {
         return ratingsLoader;
     }
 
+    public MyList<Review> getReviews() {
+        return ratingsLoader.reviews;
+    }
     private void setCreditsLoader(CreditsLoader creditsLoader) {
         this.creditsLoader = creditsLoader;
     }
@@ -54,29 +59,41 @@ public class DSL {
     }
 
     private void firstPhase() {
+        long inicio = System.currentTimeMillis();
         InputStream csvStream = getResourceStream(MOVIES_METADATA_CSV);
         peliculaLoader.cargarPeliculas(csvStream);
         System.out.println("Finished loading movies.csv");
+        long fin = System.currentTimeMillis();
+        System.out.println("Tiempo de ejecución de la carga de movies.csv: " + (fin - inicio) + " ms");
     }
 
     private void secondPhase(PeliculaManager peliculaManager) {
+        long inicio = System.currentTimeMillis();
         RatingsLoader ratingsLoader = new RatingsLoader(peliculaManager);
         this.setRatingsLoader(ratingsLoader);
         InputStream csvStream = getResourceStream(RATINGS_CSV);
         ratingsLoader.cargarRatings(csvStream);
         System.out.println("Finished loading ratings.csv");
+        long fin = System.currentTimeMillis();
+        System.out.println("Tiempo de ejecución de la carga de ratings.csv: " + (fin - inicio) + " ms");
     }
 
     private void thirdPhase(PeliculaManager peliculaManager) {
+        long inicio = System.currentTimeMillis();
         CreditsLoader creditsLoader = new CreditsLoader(peliculaManager);
         this.setCreditsLoader(creditsLoader);
         InputStream csvStream = getResourceStream(CREDITS_CSV);
         creditsLoader.cargarCredits(csvStream);
+        long fin = System.currentTimeMillis();
+        System.out.println("Tiempo de ejecución de la carga de credits.csv: " + (fin - inicio) + " ms");
     }
 
     public void start() {
+        long inicio = System.currentTimeMillis();
         firstPhase();
         secondPhase(peliculaLoader.getPeliculaManager());
         thirdPhase(peliculaLoader.getPeliculaManager());
+        long fin = System.currentTimeMillis();
+        System.out.println("Tiempo total de ejecucion de carga de datos " + (fin - inicio) + " ms");
     }
 }

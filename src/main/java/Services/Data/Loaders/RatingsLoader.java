@@ -5,11 +5,11 @@ import Domain.Review;
 import Domain.Usuario;
 import Semantics.NotNullInteger;
 import Services.Data.managers.*;
+import Utils.SimpleLinkedList.MyLinkedList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -18,10 +18,12 @@ import java.nio.charset.StandardCharsets;
 class RatingsLoader {
     UserManager userManager;
     PeliculaManager peliculaManager;
+    MyLinkedList<Review> reviews;
 
     public RatingsLoader(PeliculaManager peliculaManager) {
         this.userManager = new UserManager();
         this.peliculaManager = peliculaManager;
+        this.reviews = new MyLinkedList<>();
     }
     public void cargarRatings(InputStream csvStream) {
         CSVFormat format = CSVFormat.Builder.create()
@@ -52,7 +54,9 @@ class RatingsLoader {
 
                     // Asignar review a usuario y película
                     user.addReview(review);
+                    reviews.add(review);
                 } catch (Exception e) {
+                    System.out.println(e.getMessage());
                     // Línea inválida, la ignoramos
                 }
             }

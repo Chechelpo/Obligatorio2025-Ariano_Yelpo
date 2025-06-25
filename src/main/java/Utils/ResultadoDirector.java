@@ -1,4 +1,4 @@
-package Domain;
+package Utils;
 
 public class ResultadoDirector implements Comparable<ResultadoDirector>{
     private String nombre;
@@ -37,7 +37,7 @@ public class ResultadoDirector implements Comparable<ResultadoDirector>{
 
     @Override
     public int compareTo(ResultadoDirector otro) {
-        return Double.compare(otro.mediana, this.mediana);
+        return Double.compare(this.mediana, otro.mediana);
     }
 
 }

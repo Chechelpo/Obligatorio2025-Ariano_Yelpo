@@ -1,4 +1,4 @@
-package Domain;
+package Utils;
 
 // Clase auxiliar para acumular suma y cantidad
 public class SumaYConteo {

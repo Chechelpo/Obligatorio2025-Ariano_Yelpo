@@ -4,7 +4,9 @@ import Domain.*;
 import Interfaces.MyHashTable;
 import Interfaces.MyList;
 import Semantics.NotNullInteger;
+import Utils.PeliculaConMedia;
 import Utils.QuickSort.QuickSort;
+import Utils.SumaYConteo;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

@@ -1,14 +1,12 @@
 package Services.Reports;
 
 import Domain.Actor;
-import Domain.ActorStats;
-import Domain.Pelicula;
+import Utils.ActorStats;
 import Domain.Review;
 import Interfaces.HashCerrado;
 import Interfaces.MyHashTable;
 import Interfaces.MyList;
 import Semantics.NotNullInteger;
-import Utils.HashTable.HashTable;
 import Utils.HashTableCerrado.MyHashCerrado;
 import Utils.QuickSort.QuickSort;
 import Utils.SimpleLinkedList.MyLinkedList;
@@ -64,8 +62,10 @@ public class FifthReport {
 
                 // Aumenta en 1 la cantidad de películas evaluadas ese mes, solo si es la primera vez que aparece esa película.
                 if (!stats.getPeliculasVistas().containsKey(idPelicula)) {
+                    System.out.println("Pelicula " + idPelicula + " no encontrada para " + actor.getId());
                     stats.getPeliculasVistas().put(idPelicula, true);
                     stats.setCantidadPeliculas(stats.getCantidadPeliculas() + 1);
+                    System.out.println(stats.getCantidadPeliculas());
                 }
 
                 //Aumenta en 1 la cantidad total de calificaciones recibidas ese mes.
@@ -85,6 +85,7 @@ public class FifthReport {
 
             if (!lista.isEmpty()) {
                 ActorStats mejor = lista.get(0);
+                System.out.println(mejor.getTotalCalificaciones());
                 System.out.println(mes + "," +
                         mejor.getNombre() + "," +
                         mejor.getCantidadPeliculas() + "," +

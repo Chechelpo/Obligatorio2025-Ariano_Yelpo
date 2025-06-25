@@ -1,7 +1,7 @@
 package Services.Reports;
 
 import Domain.Pelicula;
-import Domain.PeliculaConConteo;
+import Utils.PeliculaConConteo;
 import Domain.Review;
 import Interfaces.MyHashTable;
 import Interfaces.MyList;

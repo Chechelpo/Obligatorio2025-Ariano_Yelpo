@@ -1,4 +1,4 @@
-package Domain;
+package Utils;
 
 import Interfaces.MyList;
 
@@ -37,7 +37,7 @@ public class ColeccionConIngresos implements Comparable<ColeccionConIngresos> {
 
     @Override
     public int compareTo(ColeccionConIngresos otra) {
-        return Integer.compare(otra.ingresos, this.ingresos); // descendente
+        return Integer.compare(this.ingresos, otra.ingresos); // descendente
     }
 }
 

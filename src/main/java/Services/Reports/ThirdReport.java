@@ -2,7 +2,7 @@ package Services.Reports;
 
 import Domain.Saga;
 import Domain.Pelicula;
-import Domain.ColeccionConIngresos;
+import Utils.ColeccionConIngresos;
 import Interfaces.HashCerrado;
 import Interfaces.MyList;
 import Semantics.NotNullInteger;

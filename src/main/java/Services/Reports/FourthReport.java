@@ -1,7 +1,7 @@
 package Services.Reports;
 
 import Domain.Director;
-import Domain.ResultadoDirector;
+import Utils.ResultadoDirector;
 import Interfaces.HashCerrado;
 import Semantics.NotNullInteger;
 import Domain.Review;
@@ -9,7 +9,6 @@ import Interfaces.MyList;
 import Utils.QuickSort.QuickSort;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class FourthReport {
 

@@ -1,17 +1,13 @@
 package Services.Reports;
 
-import Domain.GeneroConConteo;
+import Utils.GeneroConConteo;
 import Domain.Pelicula;
 import Domain.Review;
-import Domain.Usuario;
 import Interfaces.HashCerrado;
-import Interfaces.MyHashTable;
 import Interfaces.MyList;
 import Semantics.NotNullInteger;
-import Utils.HashTable.HashTable;
 import Utils.HashTableCerrado.MyHashCerrado;
 import Utils.QuickSort.QuickSort;
-import Utils.SimpleLinkedList.MyLinkedList;
 
 import java.util.ArrayList;
 

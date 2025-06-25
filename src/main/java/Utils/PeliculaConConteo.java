@@ -1,4 +1,6 @@
-package Domain;
+package Utils;
+
+import Domain.Pelicula;
 
 public class PeliculaConConteo implements Comparable<PeliculaConConteo> {
     private final Pelicula pelicula;
@@ -20,7 +22,7 @@ public class PeliculaConConteo implements Comparable<PeliculaConConteo> {
     @Override
     public int compareTo(PeliculaConConteo otra) {
         // Orden descendente: más reviews primero
-        return Integer.compare(otra.conteo, this.conteo);
+        return Integer.compare(this.conteo, otra.conteo);
     }
 }
 

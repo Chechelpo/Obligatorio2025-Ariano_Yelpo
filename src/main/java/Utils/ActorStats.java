@@ -1,4 +1,4 @@
-package Domain;
+package Utils;
 
 import Interfaces.MyHashTable;
 import Semantics.NotNullInteger;
@@ -49,9 +49,9 @@ public class ActorStats implements Comparable<ActorStats> {
     // Ordenamiento por cantidad de películas, luego por calificaciones
     @Override
     public int compareTo(ActorStats otro) {
-        int cmp = Integer.compare(otro.cantidadPeliculas, this.cantidadPeliculas);
+        int cmp = Integer.compare(this.cantidadPeliculas, otro.cantidadPeliculas);
         if (cmp == 0) {
-            cmp = Integer.compare(otro.totalCalificaciones, this.totalCalificaciones);
+            cmp = Integer.compare(this.totalCalificaciones, otro.totalCalificaciones);
         }
         return cmp;
     }

@@ -1,4 +1,4 @@
-package Domain;
+package Utils;
 
 // Clase auxiliar para ordenar géneros por conteo
 public class GeneroConConteo implements Comparable<GeneroConConteo> {

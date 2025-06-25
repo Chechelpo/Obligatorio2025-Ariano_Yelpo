@@ -1,4 +1,6 @@
-package Domain;
+package Utils;
+
+import Domain.Pelicula;
 
 // Clase auxiliar para representar película con media
 public class PeliculaConMedia implements Comparable<PeliculaConMedia> {
@@ -20,6 +22,6 @@ public class PeliculaConMedia implements Comparable<PeliculaConMedia> {
 
     @Override
     public int compareTo(PeliculaConMedia otra) {
-        return Double.compare(otra.media, this.media); // descendente
+        return Double.compare(this.media, otra.media); // descendente
     }
 }

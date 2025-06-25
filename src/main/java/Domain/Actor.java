@@ -21,6 +21,10 @@ public class Actor {
         return name;
     }
 
+    public MyHashTable<NotNullInteger, Boolean> getPeliculas() {
+        return peliculas;
+    }
+
     public void agregarPelicula(Pelicula pelicula) {
         peliculas.put(pelicula.getId(),true);
     }

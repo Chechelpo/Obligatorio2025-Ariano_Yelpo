@@ -1,65 +1,56 @@
 package Services.Reports;
 
 import Domain.Director;
-import Utils.ResultadoDirector;
-import Interfaces.HashCerrado;
-import Semantics.NotNullInteger;
 import Domain.Review;
+import Interfaces.HashCerrado;
 import Interfaces.MyList;
+import Semantics.NotNullInteger;
 import Utils.QuickSort.QuickSort;
+import Utils.ResultadoDirector;
+import Utils.HashTableCerrado.MyHashCerrado;
 
 import java.util.ArrayList;
 
 public class FourthReport {
 
-    public static void fourthReport(HashCerrado<NotNullInteger, Director> directores, MyList<Review> reviews) {
+    public static void fourthReport(HashCerrado<NotNullInteger, Director> directorPorID,
+                                    MyList<Review> reviews) {
 
         ArrayList<ResultadoDirector> resultados = new ArrayList<>();
 
-        // Revisamos cada director
-        for (Director d : directores.values()) {
+        // Paso 1: Indexar todas las reviews por idPelicula
+        HashCerrado<NotNullInteger, ArrayList<Double>> calificacionesPorPelicula = new MyHashCerrado<>(10000);
 
-            //Para el director creamos una lista que contenga todas las calificaciones de sus películas
+        for (Review r : reviews) {
+            NotNullInteger idPelicula = r.getPelicula().getId();
+            if (!calificacionesPorPelicula.containsKey(idPelicula)) {
+                calificacionesPorPelicula.put(idPelicula, new ArrayList<>());
+            }
+            calificacionesPorPelicula.get(idPelicula).add(r.getEvaluation());
+        }
+
+        // Paso 2: Procesar cada director y calcular su mediana
+        for (Director d : directorPorID.values()) {
             ArrayList<Double> todasLasNotas = new ArrayList<>();
-
-            //Contador de cantidad de películas
             int cantidadPeliculas = 0;
 
-            //Revisamos todas las películas del director (las keys de su hashtable son las id de las peliculas, que es lo único que necesitamos)
             for (NotNullInteger idPelicula : d.getDirectedMovies().keys()) {
-                int reviewsPorPelicula = 0;
-
-                //En la lista de reviews buscamos todas las reviews asociadas a la película en cuestion
-                for (Review r : reviews) {
-                    if (r.getPelicula().getId().equals(idPelicula)) {
-                        todasLasNotas.add(r.getEvaluation()); //agregamos a la lista de notas la evaluacion de esta review
-                        reviewsPorPelicula++;
-                    }
-                }
-
-                // Aumentamos la cantidad de películas 1 sola vez si para esat película encontramos al menos 1 review
-                if (reviewsPorPelicula > 0) {
+                ArrayList<Double> notas = calificacionesPorPelicula.get(idPelicula);
+                if (notas != null && !notas.isEmpty()) {
+                    todasLasNotas.addAll(notas);
                     cantidadPeliculas++;
                 }
             }
 
-            //Filtro
+            // Filtro por condiciones de la letra
             if (cantidadPeliculas > 1 && todasLasNotas.size() > 100) {
-                //Ordenamos la lista de todas las notas para hallar la mediana (el valor en medio de la lista ordenada)
                 ordenarTodasLasNotas(todasLasNotas);
-                double mediana;
-                int n = todasLasNotas.size();
-                if (n % 2 == 0) {
-                    mediana = (todasLasNotas.get(n / 2 - 1) + todasLasNotas.get(n / 2)) / 2.0;
-                } else {
-                    mediana = todasLasNotas.get(n / 2);
-                }
+                double mediana = calcularMediana(todasLasNotas);
                 resultados.add(new ResultadoDirector(d.getName().getValue(), cantidadPeliculas, mediana));
             }
         }
 
-        //La lista resultados tiene clases del tipo ResultadoDirector, que tiene todos los datos que necesitamos imprimir de cada director
-        //Esta clase implementa Comparable, y en su metodo compareTo() compara en funcion a la mediana que es lo que queremos
+        // Paso 3: Ordenar por mediana descendente y mostrar top 10
         ordenarPorMedianaDescendente(resultados);
 
         for (int i = 0; i < Math.min(10, resultados.size()); i++) {
@@ -77,5 +68,15 @@ public class FourthReport {
         QuickSort<Double> sortQ = new QuickSort<>();
         sortQ.quickSort(todasLasNotas);
     }
+
+    private static double calcularMediana(ArrayList<Double> lista) {
+        int n = lista.size();
+        if (n % 2 == 0) {
+            return (lista.get(n / 2 - 1) + lista.get(n / 2)) / 2.0;
+        } else {
+            return lista.get(n / 2);
+        }
+    }
 }
+
 

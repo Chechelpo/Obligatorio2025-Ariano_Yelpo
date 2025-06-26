@@ -1,6 +1,8 @@
 package Services.Reports;
 
 import Domain.Pelicula;
+import Interfaces.HashCerrado;
+import Utils.HashTableCerrado.MyHashCerrado;
 import Utils.PeliculaConConteo;
 import Domain.Review;
 import Interfaces.MyHashTable;
@@ -8,7 +10,7 @@ import Interfaces.MyList;
 import Semantics.NotNullInteger;
 import Utils.QuickSort.QuickSort;
 import java.util.ArrayList;
-import java.util.Hashtable;
+
 
 /**
  * Tomando en cuenta las películas y las evaluaciones que los usuarios realizaron
@@ -25,7 +27,7 @@ public class FirstReport {
     public static void firstReport(MyHashTable<NotNullInteger, Pelicula> peliculasPorId, MyList<Review> reviews) {
 
         // PASO 1: Crear HASH que tenga como clave id_Película y que guarde la cantidad de reviews que tenga
-        Hashtable<NotNullInteger, Integer> conteoPorPelicula = new Hashtable<>();
+        HashCerrado<NotNullInteger, Integer> conteoPorPelicula = new MyHashCerrado<>(100);
 
         // Recorremos la lista de reviews y cada vez que veamos una película repetida
         // Aumentamos el contador de películas en el HASH donde esta la id de la pelicula en cuestión

@@ -1,15 +1,17 @@
 package Services.Reports;
 
 import Domain.*;
+import Interfaces.HashCerrado;
 import Interfaces.MyHashTable;
 import Interfaces.MyList;
 import Semantics.NotNullInteger;
+import Utils.HashTableCerrado.MyHashCerrado;
 import Utils.PeliculaConMedia;
 import Utils.QuickSort.QuickSort;
 import Utils.SumaYConteo;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+
 
 /**
  * Top 10 de las películas que mejor calificación media tienen por parte de los usuarios.
@@ -22,7 +24,7 @@ import java.util.Hashtable;
 public class SecondReport {
     public static void secondReport(MyHashTable<NotNullInteger, Pelicula> peliculasPorId, MyList<Review> reviews) {
         // Paso 1: Acumular suma y cantidad de reviews por película
-        Hashtable<NotNullInteger, SumaYConteo> mediasPorPelicula = new Hashtable<>();
+        HashCerrado<NotNullInteger, SumaYConteo> mediasPorPelicula = new MyHashCerrado<>(100);
 
         // Recorremos todas las reviews y vamos poco a poco rellenando el hash
         // Con sus datos correspondientes (enrealidad es a las clases dentro del hash)

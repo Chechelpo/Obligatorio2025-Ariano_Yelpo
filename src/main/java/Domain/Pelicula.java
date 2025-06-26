@@ -16,7 +16,7 @@ public class Pelicula {
         this.id = id;
         this.title = title;
         this.originalLanguage = originalLanguage;
-        this.income = revenue;
+        this.income = revenue; //Ingresos, no beneficios mamita queria
         this.generos = new MyHashCerrado<>(15);
     }
 
